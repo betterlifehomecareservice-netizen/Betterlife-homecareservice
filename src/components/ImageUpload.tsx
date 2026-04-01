@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { Camera, Loader2, Upload, X } from "lucide-react";
+import { Loader2, Upload, X } from "lucide-react";
 import { uploadImageToCloudinary } from "../lib/cloudinary";
 
 type ImageUploadProps = {
@@ -25,7 +25,9 @@ export default function ImageUpload({
     fileInputRef.current?.click();
   };
 
-  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = async (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
@@ -37,17 +39,25 @@ export default function ImageUpload({
       onChange(result.url);
     } catch (err) {
       const message =
-        err instanceof Error ? err.message : isBn ? "ছবি আপলোড ব্যর্থ হয়েছে" : "Image upload failed";
+        err instanceof Error
+          ? err.message
+          : isBn
+          ? "ছবি আপলোড ব্যর্থ হয়েছে"
+          : "Image upload failed";
       setError(message);
     } finally {
       setUploading(false);
-      if (fileInputRef.current) fileInputRef.current.value = "";
+      if (fileInputRef.current) {
+        fileInputRef.current.value = "";
+      }
     }
   };
 
   return (
     <div>
-      <label className="mb-2 block text-sm font-medium text-slate-300">{label}</label>
+      <label className="mb-2 block text-sm font-medium text-slate-300">
+        {label}
+      </label>
 
       <input
         ref={fileInputRef}
