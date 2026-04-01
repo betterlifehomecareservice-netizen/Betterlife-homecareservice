@@ -34,6 +34,8 @@ type Banner = {
   created_at?: string;
 };
 
+type Language = "en" | "bn";
+
 const emptyProductForm = {
   name: "",
   description: "",
@@ -47,12 +49,104 @@ const emptyBannerForm = {
   image_url: "",
 };
 
+const textMap = {
+  en: {
+    title: "BetterLife Admin",
+    subtitle: "Professional admin panel for products, banners and uploads",
+    totalProducts: "Total Products",
+    totalBanners: "Total Banners",
+    quickOverview: "Quick Overview",
+    contentManager: "Content Manager",
+    contentDesc: "Add products, upload images and manage homepage banners.",
+    products: "Products",
+    banners: "Banners",
+    settings: "Settings",
+    logout: "Logout",
+    addProduct: "Add Product",
+    editProduct: "Edit Product",
+    cancel: "Cancel",
+    productName: "Product Name",
+    description: "Description",
+    price: "Price",
+    productImage: "Product Image",
+    updateProduct: "Update Product",
+    productsList: "Products List",
+    noProducts: "No products found.",
+    addBanner: "Add Banner",
+    editBanner: "Edit Banner",
+    bannerTitle: "Banner Title",
+    subtitleLabel: "Subtitle",
+    bannerImage: "Banner Image",
+    updateBanner: "Update Banner",
+    bannersList: "Banners List",
+    noBanners: "No banners found.",
+    checking: "Checking admin session...",
+    loading: "Loading...",
+    saving: "Saving...",
+    productRequired: "Product name is required.",
+    bannerRequired: "Banner title is required.",
+    productAdded: "Product added successfully.",
+    productUpdated: "Product updated successfully.",
+    bannerAdded: "Banner added successfully.",
+    bannerUpdated: "Banner updated successfully.",
+    productDeleted: "Product deleted successfully.",
+    bannerDeleted: "Banner deleted successfully.",
+    deleteProductConfirm: "Are you sure you want to delete this product?",
+    deleteBannerConfirm: "Are you sure you want to delete this banner?",
+  },
+  bn: {
+    title: "বেটারলাইফ অ্যাডমিন",
+    subtitle: "প্রোডাক্ট, ব্যানার এবং আপলোড ম্যানেজ করার প্যানেল",
+    totalProducts: "মোট প্রোডাক্ট",
+    totalBanners: "মোট ব্যানার",
+    quickOverview: "দ্রুত সারাংশ",
+    contentManager: "কনটেন্ট ম্যানেজার",
+    contentDesc: "প্রোডাক্ট যোগ করুন, ছবি আপলোড করুন এবং হোমপেজ ব্যানার ম্যানেজ করুন।",
+    products: "প্রোডাক্ট",
+    banners: "ব্যানার",
+    settings: "সেটিংস",
+    logout: "লগআউট",
+    addProduct: "প্রোডাক্ট যোগ করুন",
+    editProduct: "প্রোডাক্ট এডিট করুন",
+    cancel: "বাতিল",
+    productName: "প্রোডাক্টের নাম",
+    description: "বিবরণ",
+    price: "দাম",
+    productImage: "প্রোডাক্টের ছবি",
+    updateProduct: "প্রোডাক্ট আপডেট করুন",
+    productsList: "প্রোডাক্ট লিস্ট",
+    noProducts: "কোনো প্রোডাক্ট পাওয়া যায়নি।",
+    addBanner: "ব্যানার যোগ করুন",
+    editBanner: "ব্যানার এডিট করুন",
+    bannerTitle: "ব্যানারের শিরোনাম",
+    subtitleLabel: "সাবটাইটেল",
+    bannerImage: "ব্যানারের ছবি",
+    updateBanner: "ব্যানার আপডেট করুন",
+    bannersList: "ব্যানার লিস্ট",
+    noBanners: "কোনো ব্যানার পাওয়া যায়নি।",
+    checking: "অ্যাডমিন সেশন চেক করা হচ্ছে...",
+    loading: "লোড হচ্ছে...",
+    saving: "সেভ হচ্ছে...",
+    productRequired: "প্রোডাক্টের নাম দিতে হবে।",
+    bannerRequired: "ব্যানারের শিরোনাম দিতে হবে।",
+    productAdded: "প্রোডাক্ট সফলভাবে যোগ হয়েছে।",
+    productUpdated: "প্রোডাক্ট সফলভাবে আপডেট হয়েছে।",
+    bannerAdded: "ব্যানার সফলভাবে যোগ হয়েছে।",
+    bannerUpdated: "ব্যানার সফলভাবে আপডেট হয়েছে।",
+    productDeleted: "প্রোডাক্ট সফলভাবে ডিলিট হয়েছে।",
+    bannerDeleted: "ব্যানার সফলভাবে ডিলিট হয়েছে।",
+    deleteProductConfirm: "আপনি কি এই প্রোডাক্ট ডিলিট করতে চান?",
+    deleteBannerConfirm: "আপনি কি এই ব্যানার ডিলিট করতে চান?",
+  },
+} as const;
+
 export default function AdminDashboard() {
   const navigate = useNavigate();
 
   const [checkingAuth, setCheckingAuth] = useState(true);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeTab, setActiveTab] = useState<"products" | "banners">("products");
+  const [language, setLanguage] = useState<Language>("en");
 
   const [products, setProducts] = useState<Product[]>([]);
   const [banners, setBanners] = useState<Banner[]>([]);
@@ -69,6 +163,15 @@ export default function AdminDashboard() {
 
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
+
+  const t = textMap[language];
+
+  useEffect(() => {
+    const savedLanguage = localStorage.getItem("betterlife_admin_language");
+    if (savedLanguage === "bn" || savedLanguage === "en") {
+      setLanguage(savedLanguage);
+    }
+  }, []);
 
   useEffect(() => {
     const init = async () => {
@@ -104,11 +207,8 @@ export default function AdminDashboard() {
       .select("*")
       .order("created_at", { ascending: false });
 
-    if (error) {
-      setError(error.message);
-    } else {
-      setProducts((data as Product[]) || []);
-    }
+    if (error) setError(error.message);
+    else setProducts((data as Product[]) || []);
 
     setLoadingProducts(false);
   };
@@ -121,11 +221,8 @@ export default function AdminDashboard() {
       .select("*")
       .order("created_at", { ascending: false });
 
-    if (error) {
-      setError(error.message);
-    } else {
-      setBanners((data as Banner[]) || []);
-    }
+    if (error) setError(error.message);
+    else setBanners((data as Banner[]) || []);
 
     setLoadingBanners(false);
   };
@@ -148,7 +245,7 @@ export default function AdminDashboard() {
     };
 
     if (!payload.name) {
-      setError("Product name is required.");
+      setError(t.productRequired);
       setSaving(false);
       return;
     }
@@ -156,10 +253,7 @@ export default function AdminDashboard() {
     let result;
 
     if (editingProductId) {
-      result = await supabase
-        .from("products")
-        .update(payload)
-        .eq("id", editingProductId);
+      result = await supabase.from("products").update(payload).eq("id", editingProductId);
     } else {
       result = await supabase.from("products").insert([payload]);
     }
@@ -167,11 +261,7 @@ export default function AdminDashboard() {
     if (result.error) {
       setError(result.error.message);
     } else {
-      setMessage(
-        editingProductId
-          ? "Product updated successfully."
-          : "Product added successfully."
-      );
+      setMessage(editingProductId ? t.productUpdated : t.productAdded);
       setProductForm(emptyProductForm);
       setEditingProductId(null);
       await fetchProducts();
@@ -192,7 +282,7 @@ export default function AdminDashboard() {
     };
 
     if (!payload.title) {
-      setError("Banner title is required.");
+      setError(t.bannerRequired);
       setSaving(false);
       return;
     }
@@ -200,10 +290,7 @@ export default function AdminDashboard() {
     let result;
 
     if (editingBannerId) {
-      result = await supabase
-        .from("banners")
-        .update(payload)
-        .eq("id", editingBannerId);
+      result = await supabase.from("banners").update(payload).eq("id", editingBannerId);
     } else {
       result = await supabase.from("banners").insert([payload]);
     }
@@ -211,11 +298,7 @@ export default function AdminDashboard() {
     if (result.error) {
       setError(result.error.message);
     } else {
-      setMessage(
-        editingBannerId
-          ? "Banner updated successfully."
-          : "Banner added successfully."
-      );
+      setMessage(editingBannerId ? t.bannerUpdated : t.bannerAdded);
       setBannerForm(emptyBannerForm);
       setEditingBannerId(null);
       await fetchBanners();
@@ -250,17 +333,15 @@ export default function AdminDashboard() {
   };
 
   const handleDeleteProduct = async (id: string) => {
-    const ok = window.confirm("Are you sure you want to delete this product?");
+    const ok = window.confirm(t.deleteProductConfirm);
     if (!ok) return;
 
     clearAlerts();
-
     const { error } = await supabase.from("products").delete().eq("id", id);
 
-    if (error) {
-      setError(error.message);
-    } else {
-      setMessage("Product deleted successfully.");
+    if (error) setError(error.message);
+    else {
+      setMessage(t.productDeleted);
       if (editingProductId === id) {
         setEditingProductId(null);
         setProductForm(emptyProductForm);
@@ -270,17 +351,15 @@ export default function AdminDashboard() {
   };
 
   const handleDeleteBanner = async (id: string) => {
-    const ok = window.confirm("Are you sure you want to delete this banner?");
+    const ok = window.confirm(t.deleteBannerConfirm);
     if (!ok) return;
 
     clearAlerts();
-
     const { error } = await supabase.from("banners").delete().eq("id", id);
 
-    if (error) {
-      setError(error.message);
-    } else {
-      setMessage("Banner deleted successfully.");
+    if (error) setError(error.message);
+    else {
+      setMessage(t.bannerDeleted);
       if (editingBannerId === id) {
         setEditingBannerId(null);
         setBannerForm(emptyBannerForm);
@@ -291,10 +370,10 @@ export default function AdminDashboard() {
 
   if (checkingAuth) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-[#030712] text-white">
+      <div className="flex min-h-screen items-center justify-center bg-[#020617] text-white">
         <div className="flex items-center gap-3 rounded-2xl border border-slate-800 bg-slate-900 px-5 py-4">
           <Loader2 className="h-5 w-5 animate-spin" />
-          Checking admin session...
+          {t.checking}
         </div>
       </div>
     );
@@ -302,7 +381,7 @@ export default function AdminDashboard() {
 
   return (
     <div className="min-h-screen bg-[#020617] text-white">
-      <header className="sticky top-0 z-40 border-b border-blue-950/70 bg-gradient-to-r from-[#06142d] via-[#0b2352] to-[#08152f] shadow-lg shadow-black/20 backdrop-blur">
+      <header className="sticky top-0 z-40 border-b border-slate-800 bg-gradient-to-r from-[#071224] via-[#0b2a5b] to-[#071224] shadow-lg shadow-black/20">
         <div className="mx-auto max-w-7xl px-4 py-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between gap-4">
             <div className="flex min-w-0 items-center gap-3">
@@ -311,27 +390,46 @@ export default function AdminDashboard() {
               </div>
 
               <div className="min-w-0">
-                <h1 className="truncate text-xl font-bold sm:text-2xl">
-                  BetterLife Admin
-                </h1>
-                <p className="mt-1 hidden text-sm text-slate-300 sm:block">
-                  Clean control panel for products, banners and uploads
-                </p>
+                <h1 className="truncate text-xl font-bold sm:text-2xl">{t.title}</h1>
+                <p className="mt-1 hidden text-sm text-slate-300 sm:block">{t.subtitle}</p>
               </div>
             </div>
 
             <div className="hidden items-center gap-2 md:flex">
               <button
+                onClick={() => setActiveTab("products")}
+                className={`rounded-xl px-4 py-2.5 text-sm font-medium transition ${
+                  activeTab === "products"
+                    ? "bg-cyan-500 text-white"
+                    : "border border-slate-700 bg-slate-900/70 text-white"
+                }`}
+              >
+                {t.products}
+              </button>
+
+              <button
+                onClick={() => setActiveTab("banners")}
+                className={`rounded-xl px-4 py-2.5 text-sm font-medium transition ${
+                  activeTab === "banners"
+                    ? "bg-emerald-500 text-white"
+                    : "border border-slate-700 bg-slate-900/70 text-white"
+                }`}
+              >
+                {t.banners}
+              </button>
+
+              <button
                 onClick={() => navigate("/admin/settings")}
                 className="rounded-xl border border-slate-700 bg-slate-900/70 px-4 py-2.5 text-sm font-medium text-white transition hover:bg-slate-800"
               >
-                Settings
+                {t.settings}
               </button>
+
               <button
                 onClick={handleLogout}
                 className="rounded-xl border border-slate-700 bg-slate-900/70 px-4 py-2.5 text-sm font-medium text-white transition hover:bg-slate-800"
               >
-                Logout
+                {t.logout}
               </button>
             </div>
 
@@ -340,16 +438,38 @@ export default function AdminDashboard() {
               onClick={() => setMobileMenuOpen((prev) => !prev)}
               className="inline-flex h-11 w-11 items-center justify-center rounded-xl border border-slate-700 bg-slate-900/70 md:hidden"
             >
-              {mobileMenuOpen ? (
-                <X className="h-5 w-5 text-white" />
-              ) : (
-                <Menu className="h-5 w-5 text-white" />
-              )}
+              {mobileMenuOpen ? <X className="h-5 w-5 text-white" /> : <Menu className="h-5 w-5 text-white" />}
             </button>
           </div>
 
           {mobileMenuOpen && (
             <div className="mt-4 grid gap-2 rounded-2xl border border-slate-800 bg-[#081327] p-3 md:hidden">
+              <button
+                onClick={() => {
+                  setActiveTab("products");
+                  setMobileMenuOpen(false);
+                }}
+                className={`flex items-center gap-2 rounded-xl px-4 py-3 text-left text-sm font-medium ${
+                  activeTab === "products" ? "bg-cyan-500 text-white" : "bg-slate-900 text-white"
+                }`}
+              >
+                <Package className="h-4 w-4" />
+                {t.products}
+              </button>
+
+              <button
+                onClick={() => {
+                  setActiveTab("banners");
+                  setMobileMenuOpen(false);
+                }}
+                className={`flex items-center gap-2 rounded-xl px-4 py-3 text-left text-sm font-medium ${
+                  activeTab === "banners" ? "bg-emerald-500 text-white" : "bg-slate-900 text-white"
+                }`}
+              >
+                <ImageIcon className="h-4 w-4" />
+                {t.banners}
+              </button>
+
               <button
                 onClick={() => {
                   setMobileMenuOpen(false);
@@ -358,7 +478,7 @@ export default function AdminDashboard() {
                 className="flex items-center gap-2 rounded-xl bg-slate-900 px-4 py-3 text-left text-sm font-medium text-white"
               >
                 <Settings className="h-4 w-4" />
-                Settings
+                {t.settings}
               </button>
 
               <button
@@ -369,7 +489,7 @@ export default function AdminDashboard() {
                 className="flex items-center gap-2 rounded-xl bg-slate-900 px-4 py-3 text-left text-sm font-medium text-white"
               >
                 <LogOut className="h-4 w-4" />
-                Logout
+                {t.logout}
               </button>
             </div>
           )}
@@ -381,7 +501,7 @@ export default function AdminDashboard() {
           <div className="rounded-3xl border border-slate-800 bg-slate-900/95 p-5 shadow-xl shadow-black/10">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-slate-400">Total Products</p>
+                <p className="text-sm text-slate-400">{t.totalProducts}</p>
                 <h2 className="mt-3 text-4xl font-bold">{totalProducts}</h2>
               </div>
               <div className="rounded-2xl bg-cyan-500/10 p-4">
@@ -393,7 +513,7 @@ export default function AdminDashboard() {
           <div className="rounded-3xl border border-slate-800 bg-slate-900/95 p-5 shadow-xl shadow-black/10">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-slate-400">Total Banners</p>
+                <p className="text-sm text-slate-400">{t.totalBanners}</p>
                 <h2 className="mt-3 text-4xl font-bold">{totalBanners}</h2>
               </div>
               <div className="rounded-2xl bg-emerald-500/10 p-4">
@@ -405,13 +525,9 @@ export default function AdminDashboard() {
           <div className="rounded-3xl border border-slate-800 bg-slate-900/95 p-5 shadow-xl shadow-black/10 md:col-span-2 xl:col-span-1">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-slate-400">Quick Overview</p>
-                <h3 className="mt-3 text-lg font-semibold text-slate-200">
-                  Content Manager
-                </h3>
-                <p className="mt-2 text-sm text-slate-400">
-                  Add products, upload images and manage homepage banners.
-                </p>
+                <p className="text-sm text-slate-400">{t.quickOverview}</p>
+                <h3 className="mt-3 text-lg font-semibold text-slate-200">{t.contentManager}</h3>
+                <p className="mt-2 text-sm text-slate-400">{t.contentDesc}</p>
               </div>
               <div className="rounded-2xl bg-violet-500/10 p-4">
                 <BarChart3 className="h-8 w-8 text-violet-400" />
@@ -432,42 +548,12 @@ export default function AdminDashboard() {
           </div>
         )}
 
-        <div className="mb-6 flex flex-wrap gap-3">
-          <button
-            onClick={() => {
-              clearAlerts();
-              setActiveTab("products");
-            }}
-            className={`rounded-2xl px-5 py-3 text-sm font-semibold transition ${
-              activeTab === "products"
-                ? "bg-cyan-500 text-white shadow-lg shadow-cyan-500/20"
-                : "border border-slate-700 bg-slate-900 text-slate-300"
-            }`}
-          >
-            Products
-          </button>
-
-          <button
-            onClick={() => {
-              clearAlerts();
-              setActiveTab("banners");
-            }}
-            className={`rounded-2xl px-5 py-3 text-sm font-semibold transition ${
-              activeTab === "banners"
-                ? "bg-emerald-500 text-white shadow-lg shadow-emerald-500/20"
-                : "border border-slate-700 bg-slate-900 text-slate-300"
-            }`}
-          >
-            Banners
-          </button>
-        </div>
-
         {activeTab === "products" ? (
           <div className="grid gap-6 xl:grid-cols-[420px_minmax(0,1fr)]">
             <section className="rounded-3xl border border-slate-800 bg-slate-900/95 p-5 shadow-xl shadow-black/10">
               <div className="mb-5 flex items-center justify-between">
                 <h3 className="text-xl font-semibold">
-                  {editingProductId ? "Edit Product" : "Add Product"}
+                  {editingProductId ? t.editProduct : t.addProduct}
                 </h3>
 
                 {editingProductId && (
@@ -479,74 +565,49 @@ export default function AdminDashboard() {
                     }}
                     className="text-sm text-slate-400 hover:text-white"
                   >
-                    Cancel
+                    {t.cancel}
                   </button>
                 )}
               </div>
 
               <form onSubmit={handleProductSubmit} className="space-y-4">
                 <div>
-                  <label className="mb-2 block text-sm font-medium text-slate-300">
-                    Product Name
-                  </label>
+                  <label className="mb-2 block text-sm font-medium text-slate-300">{t.productName}</label>
                   <input
                     type="text"
                     value={productForm.name}
-                    onChange={(e) =>
-                      setProductForm((prev) => ({
-                        ...prev,
-                        name: e.target.value,
-                      }))
-                    }
+                    onChange={(e) => setProductForm((prev) => ({ ...prev, name: e.target.value }))}
                     required
                     className="w-full rounded-2xl border border-slate-700 bg-slate-800 px-4 py-3 text-white outline-none transition focus:border-cyan-500"
                   />
                 </div>
 
                 <div>
-                  <label className="mb-2 block text-sm font-medium text-slate-300">
-                    Description
-                  </label>
+                  <label className="mb-2 block text-sm font-medium text-slate-300">{t.description}</label>
                   <textarea
                     rows={4}
                     value={productForm.description}
-                    onChange={(e) =>
-                      setProductForm((prev) => ({
-                        ...prev,
-                        description: e.target.value,
-                      }))
-                    }
+                    onChange={(e) => setProductForm((prev) => ({ ...prev, description: e.target.value }))}
                     className="w-full rounded-2xl border border-slate-700 bg-slate-800 px-4 py-3 text-white outline-none transition focus:border-cyan-500"
                   />
                 </div>
 
                 <div>
-                  <label className="mb-2 block text-sm font-medium text-slate-300">
-                    Price
-                  </label>
+                  <label className="mb-2 block text-sm font-medium text-slate-300">{t.price}</label>
                   <input
                     type="text"
                     value={productForm.price}
-                    onChange={(e) =>
-                      setProductForm((prev) => ({
-                        ...prev,
-                        price: e.target.value,
-                      }))
-                    }
+                    onChange={(e) => setProductForm((prev) => ({ ...prev, price: e.target.value }))}
                     placeholder="$99"
                     className="w-full rounded-2xl border border-slate-700 bg-slate-800 px-4 py-3 text-white outline-none transition focus:border-cyan-500"
                   />
                 </div>
 
                 <ImageUpload
-                  label="Product Image"
+                  label={t.productImage}
                   value={productForm.image_url}
-                  onChange={(url) =>
-                    setProductForm((prev) => ({
-                      ...prev,
-                      image_url: url,
-                    }))
-                  }
+                  onChange={(url) => setProductForm((prev) => ({ ...prev, image_url: url }))}
+                  language={language}
                 />
 
                 <button
@@ -557,12 +618,12 @@ export default function AdminDashboard() {
                   {saving ? (
                     <>
                       <Loader2 className="h-5 w-5 animate-spin" />
-                      Saving...
+                      {t.saving}
                     </>
                   ) : (
                     <>
                       <Plus className="h-5 w-5" />
-                      {editingProductId ? "Update Product" : "Add Product"}
+                      {editingProductId ? t.updateProduct : t.addProduct}
                     </>
                   )}
                 </button>
@@ -571,11 +632,11 @@ export default function AdminDashboard() {
 
             <section className="rounded-3xl border border-slate-800 bg-slate-900/95 p-5 shadow-xl shadow-black/10">
               <div className="mb-5 flex items-center justify-between">
-                <h3 className="text-xl font-semibold">Products List</h3>
+                <h3 className="text-xl font-semibold">{t.productsList}</h3>
                 {loadingProducts && (
                   <div className="flex items-center gap-2 text-sm text-slate-400">
                     <Loader2 className="h-4 w-4 animate-spin" />
-                    Loading...
+                    {t.loading}
                   </div>
                 )}
               </div>
@@ -583,23 +644,16 @@ export default function AdminDashboard() {
               <div className="space-y-4">
                 {products.length === 0 && !loadingProducts ? (
                   <div className="rounded-2xl border border-dashed border-slate-700 px-4 py-10 text-center text-slate-400">
-                    No products found.
+                    {t.noProducts}
                   </div>
                 ) : (
                   products.map((product) => (
-                    <div
-                      key={product.id}
-                      className="rounded-3xl border border-slate-800 bg-[#040d20] p-4"
-                    >
+                    <div key={product.id} className="rounded-3xl border border-slate-800 bg-[#040d20] p-4">
                       <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
                         <div className="flex gap-4">
                           <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-2xl bg-slate-800">
                             {product.image_url ? (
-                              <img
-                                src={product.image_url}
-                                alt={product.name}
-                                className="h-full w-full object-cover"
-                              />
+                              <img src={product.image_url} alt={product.name} className="h-full w-full object-cover" />
                             ) : (
                               <div className="flex h-full w-full items-center justify-center text-slate-500">
                                 <Package className="h-8 w-8" />
@@ -608,18 +662,10 @@ export default function AdminDashboard() {
                           </div>
 
                           <div className="min-w-0">
-                            <h4 className="text-lg font-semibold text-white">
-                              {product.name}
-                            </h4>
-                            {product.price && (
-                              <p className="mt-1 text-sm font-medium text-cyan-400">
-                                {product.price}
-                              </p>
-                            )}
+                            <h4 className="text-lg font-semibold text-white">{product.name}</h4>
+                            {product.price && <p className="mt-1 text-sm font-medium text-cyan-400">{product.price}</p>}
                             {product.description && (
-                              <p className="mt-2 max-w-xl text-sm text-slate-400">
-                                {product.description}
-                              </p>
+                              <p className="mt-2 max-w-xl text-sm text-slate-400">{product.description}</p>
                             )}
                           </div>
                         </div>
@@ -630,7 +676,7 @@ export default function AdminDashboard() {
                             className="inline-flex items-center gap-2 rounded-xl border border-slate-700 bg-slate-800 px-3 py-2 text-sm text-slate-200 hover:bg-slate-700"
                           >
                             <Pencil className="h-4 w-4" />
-                            Edit
+                            {language === "bn" ? "এডিট" : "Edit"}
                           </button>
 
                           <button
@@ -638,7 +684,7 @@ export default function AdminDashboard() {
                             className="inline-flex items-center gap-2 rounded-xl border border-red-500/20 bg-red-500/10 px-3 py-2 text-sm text-red-300 hover:bg-red-500/20"
                           >
                             <Trash2 className="h-4 w-4" />
-                            Delete
+                            {language === "bn" ? "ডিলিট" : "Delete"}
                           </button>
                         </div>
                       </div>
@@ -653,7 +699,7 @@ export default function AdminDashboard() {
             <section className="rounded-3xl border border-slate-800 bg-slate-900/95 p-5 shadow-xl shadow-black/10">
               <div className="mb-5 flex items-center justify-between">
                 <h3 className="text-xl font-semibold">
-                  {editingBannerId ? "Edit Banner" : "Add Banner"}
+                  {editingBannerId ? t.editBanner : t.addBanner}
                 </h3>
 
                 {editingBannerId && (
@@ -665,56 +711,38 @@ export default function AdminDashboard() {
                     }}
                     className="text-sm text-slate-400 hover:text-white"
                   >
-                    Cancel
+                    {t.cancel}
                   </button>
                 )}
               </div>
 
               <form onSubmit={handleBannerSubmit} className="space-y-4">
                 <div>
-                  <label className="mb-2 block text-sm font-medium text-slate-300">
-                    Banner Title
-                  </label>
+                  <label className="mb-2 block text-sm font-medium text-slate-300">{t.bannerTitle}</label>
                   <input
                     type="text"
                     value={bannerForm.title}
-                    onChange={(e) =>
-                      setBannerForm((prev) => ({
-                        ...prev,
-                        title: e.target.value,
-                      }))
-                    }
+                    onChange={(e) => setBannerForm((prev) => ({ ...prev, title: e.target.value }))}
                     required
                     className="w-full rounded-2xl border border-slate-700 bg-slate-800 px-4 py-3 text-white outline-none transition focus:border-emerald-500"
                   />
                 </div>
 
                 <div>
-                  <label className="mb-2 block text-sm font-medium text-slate-300">
-                    Subtitle
-                  </label>
+                  <label className="mb-2 block text-sm font-medium text-slate-300">{t.subtitleLabel}</label>
                   <textarea
                     rows={4}
                     value={bannerForm.subtitle}
-                    onChange={(e) =>
-                      setBannerForm((prev) => ({
-                        ...prev,
-                        subtitle: e.target.value,
-                      }))
-                    }
+                    onChange={(e) => setBannerForm((prev) => ({ ...prev, subtitle: e.target.value }))}
                     className="w-full rounded-2xl border border-slate-700 bg-slate-800 px-4 py-3 text-white outline-none transition focus:border-emerald-500"
                   />
                 </div>
 
                 <ImageUpload
-                  label="Banner Image"
+                  label={t.bannerImage}
                   value={bannerForm.image_url}
-                  onChange={(url) =>
-                    setBannerForm((prev) => ({
-                      ...prev,
-                      image_url: url,
-                    }))
-                  }
+                  onChange={(url) => setBannerForm((prev) => ({ ...prev, image_url: url }))}
+                  language={language}
                 />
 
                 <button
@@ -725,12 +753,12 @@ export default function AdminDashboard() {
                   {saving ? (
                     <>
                       <Loader2 className="h-5 w-5 animate-spin" />
-                      Saving...
+                      {t.saving}
                     </>
                   ) : (
                     <>
                       <Plus className="h-5 w-5" />
-                      {editingBannerId ? "Update Banner" : "Add Banner"}
+                      {editingBannerId ? t.updateBanner : t.addBanner}
                     </>
                   )}
                 </button>
@@ -739,11 +767,11 @@ export default function AdminDashboard() {
 
             <section className="rounded-3xl border border-slate-800 bg-slate-900/95 p-5 shadow-xl shadow-black/10">
               <div className="mb-5 flex items-center justify-between">
-                <h3 className="text-xl font-semibold">Banners List</h3>
+                <h3 className="text-xl font-semibold">{t.bannersList}</h3>
                 {loadingBanners && (
                   <div className="flex items-center gap-2 text-sm text-slate-400">
                     <Loader2 className="h-4 w-4 animate-spin" />
-                    Loading...
+                    {t.loading}
                   </div>
                 )}
               </div>
@@ -751,23 +779,16 @@ export default function AdminDashboard() {
               <div className="space-y-4">
                 {banners.length === 0 && !loadingBanners ? (
                   <div className="rounded-2xl border border-dashed border-slate-700 px-4 py-10 text-center text-slate-400">
-                    No banners found.
+                    {t.noBanners}
                   </div>
                 ) : (
                   banners.map((banner) => (
-                    <div
-                      key={banner.id}
-                      className="rounded-3xl border border-slate-800 bg-[#040d20] p-4"
-                    >
+                    <div key={banner.id} className="rounded-3xl border border-slate-800 bg-[#040d20] p-4">
                       <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
                         <div className="flex gap-4">
                           <div className="h-24 w-32 flex-shrink-0 overflow-hidden rounded-2xl bg-slate-800">
                             {banner.image_url ? (
-                              <img
-                                src={banner.image_url}
-                                alt={banner.title}
-                                className="h-full w-full object-cover"
-                              />
+                              <img src={banner.image_url} alt={banner.title} className="h-full w-full object-cover" />
                             ) : (
                               <div className="flex h-full w-full items-center justify-center text-slate-500">
                                 <ImageIcon className="h-8 w-8" />
@@ -776,13 +797,9 @@ export default function AdminDashboard() {
                           </div>
 
                           <div className="min-w-0">
-                            <h4 className="text-lg font-semibold text-white">
-                              {banner.title}
-                            </h4>
+                            <h4 className="text-lg font-semibold text-white">{banner.title}</h4>
                             {banner.subtitle && (
-                              <p className="mt-2 max-w-xl text-sm text-slate-400">
-                                {banner.subtitle}
-                              </p>
+                              <p className="mt-2 max-w-xl text-sm text-slate-400">{banner.subtitle}</p>
                             )}
                           </div>
                         </div>
@@ -793,7 +810,7 @@ export default function AdminDashboard() {
                             className="inline-flex items-center gap-2 rounded-xl border border-slate-700 bg-slate-800 px-3 py-2 text-sm text-slate-200 hover:bg-slate-700"
                           >
                             <Pencil className="h-4 w-4" />
-                            Edit
+                            {language === "bn" ? "এডিট" : "Edit"}
                           </button>
 
                           <button
@@ -801,7 +818,7 @@ export default function AdminDashboard() {
                             className="inline-flex items-center gap-2 rounded-xl border border-red-500/20 bg-red-500/10 px-3 py-2 text-sm text-red-300 hover:bg-red-500/20"
                           >
                             <Trash2 className="h-4 w-4" />
-                            Delete
+                            {language === "bn" ? "ডিলিট" : "Delete"}
                           </button>
                         </div>
                       </div>
@@ -815,4 +832,4 @@ export default function AdminDashboard() {
       </main>
     </div>
   );
-                }
+      }
