@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { Loader2, Upload, X } from "lucide-react";
+import { Loader2, Upload, X, Camera } from "lucide-react";
 import { uploadImageToCloudinary } from "../lib/cloudinary";
 
 type ImageUploadProps = {
@@ -53,7 +53,6 @@ export default function ImageUpload({
         ref={fileInputRef}
         type="file"
         accept="image/*"
-        capture="environment"
         onChange={handleFileChange}
         className="hidden"
       />
@@ -87,8 +86,8 @@ export default function ImageUpload({
               </>
             ) : (
               <>
-                <Upload className="h-4 w-4" />
-                Upload Image
+                <Camera className="h-4 w-4" />
+                Choose Image
               </>
             )}
           </button>
@@ -105,6 +104,10 @@ export default function ImageUpload({
           )}
         </div>
 
+        <p className="mt-3 text-xs text-slate-400">
+          You can choose from camera, gallery, or files
+        </p>
+
         {value && (
           <p className="mt-3 break-all text-xs text-slate-400">{value}</p>
         )}
@@ -113,4 +116,4 @@ export default function ImageUpload({
       </div>
     </div>
   );
-      }
+}
