@@ -5,11 +5,14 @@ import {
   Image as ImageIcon,
   LayoutDashboard,
   Loader2,
+  LogOut,
+  Menu,
   Package,
   Pencil,
   Plus,
   Settings,
   Trash2,
+  X,
 } from "lucide-react";
 import { supabase } from "./lib/supabase";
 import ImageUpload from "./components/ImageUpload";
@@ -48,6 +51,7 @@ export default function AdminDashboard() {
   const navigate = useNavigate();
 
   const [checkingAuth, setCheckingAuth] = useState(true);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeTab, setActiveTab] = useState<"products" | "banners">("products");
 
   const [products, setProducts] = useState<Product[]>([]);
@@ -287,7 +291,7 @@ export default function AdminDashboard() {
 
   if (checkingAuth) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-[#020817] text-white">
+      <div className="flex min-h-screen items-center justify-center bg-[#030712] text-white">
         <div className="flex items-center gap-3 rounded-2xl border border-slate-800 bg-slate-900 px-5 py-4">
           <Loader2 className="h-5 w-5 animate-spin" />
           Checking admin session...
@@ -297,33 +301,32 @@ export default function AdminDashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-[#020817] text-white">
-      <header className="border-b border-blue-950 bg-gradient-to-r from-[#06142d] via-[#0b1d46] to-[#06142d]">
-        <div className="mx-auto max-w-7xl px-4 py-5 sm:px-6 lg:px-8">
-          <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-            <div className="flex items-start gap-4">
+    <div className="min-h-screen bg-[#020617] text-white">
+      <header className="sticky top-0 z-40 border-b border-blue-950/70 bg-gradient-to-r from-[#06142d] via-[#0b2352] to-[#08152f] shadow-lg shadow-black/20 backdrop-blur">
+        <div className="mx-auto max-w-7xl px-4 py-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between gap-4">
+            <div className="flex min-w-0 items-center gap-3">
               <div className="rounded-2xl bg-cyan-500/10 p-3 shadow-lg shadow-cyan-500/10">
-                <LayoutDashboard className="h-7 w-7 text-cyan-400" />
+                <LayoutDashboard className="h-6 w-6 text-cyan-400" />
               </div>
 
-              <div>
-                <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">
-                  BetterLife Admin Panel
+              <div className="min-w-0">
+                <h1 className="truncate text-xl font-bold sm:text-2xl">
+                  BetterLife Admin
                 </h1>
-                <p className="mt-1 max-w-2xl text-sm text-slate-300 sm:text-base">
-                  Manage products, banners, uploads and core admin content from one place.
+                <p className="mt-1 hidden text-sm text-slate-300 sm:block">
+                  Clean control panel for products, banners and uploads
                 </p>
               </div>
             </div>
 
-            <div className="flex flex-wrap gap-2">
+            <div className="hidden items-center gap-2 md:flex">
               <button
                 onClick={() => navigate("/admin/settings")}
                 className="rounded-xl border border-slate-700 bg-slate-900/70 px-4 py-2.5 text-sm font-medium text-white transition hover:bg-slate-800"
               >
                 Settings
               </button>
-
               <button
                 onClick={handleLogout}
                 className="rounded-xl border border-slate-700 bg-slate-900/70 px-4 py-2.5 text-sm font-medium text-white transition hover:bg-slate-800"
@@ -331,13 +334,51 @@ export default function AdminDashboard() {
                 Logout
               </button>
             </div>
+
+            <button
+              type="button"
+              onClick={() => setMobileMenuOpen((prev) => !prev)}
+              className="inline-flex h-11 w-11 items-center justify-center rounded-xl border border-slate-700 bg-slate-900/70 md:hidden"
+            >
+              {mobileMenuOpen ? (
+                <X className="h-5 w-5 text-white" />
+              ) : (
+                <Menu className="h-5 w-5 text-white" />
+              )}
+            </button>
           </div>
+
+          {mobileMenuOpen && (
+            <div className="mt-4 grid gap-2 rounded-2xl border border-slate-800 bg-[#081327] p-3 md:hidden">
+              <button
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  navigate("/admin/settings");
+                }}
+                className="flex items-center gap-2 rounded-xl bg-slate-900 px-4 py-3 text-left text-sm font-medium text-white"
+              >
+                <Settings className="h-4 w-4" />
+                Settings
+              </button>
+
+              <button
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  handleLogout();
+                }}
+                className="flex items-center gap-2 rounded-xl bg-slate-900 px-4 py-3 text-left text-sm font-medium text-white"
+              >
+                <LogOut className="h-4 w-4" />
+                Logout
+              </button>
+            </div>
+          )}
         </div>
       </header>
 
-      <main className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
-        <div className="mb-8 grid gap-4 md:grid-cols-3">
-          <div className="rounded-3xl border border-slate-800 bg-slate-900/90 p-6 shadow-xl shadow-black/10">
+      <main className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+        <div className="mb-6 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+          <div className="rounded-3xl border border-slate-800 bg-slate-900/95 p-5 shadow-xl shadow-black/10">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-slate-400">Total Products</p>
@@ -349,7 +390,7 @@ export default function AdminDashboard() {
             </div>
           </div>
 
-          <div className="rounded-3xl border border-slate-800 bg-slate-900/90 p-6 shadow-xl shadow-black/10">
+          <div className="rounded-3xl border border-slate-800 bg-slate-900/95 p-5 shadow-xl shadow-black/10">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-slate-400">Total Banners</p>
@@ -361,15 +402,15 @@ export default function AdminDashboard() {
             </div>
           </div>
 
-          <div className="rounded-3xl border border-slate-800 bg-slate-900/90 p-6 shadow-xl shadow-black/10">
+          <div className="rounded-3xl border border-slate-800 bg-slate-900/95 p-5 shadow-xl shadow-black/10 md:col-span-2 xl:col-span-1">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-slate-400">Quick Overview</p>
-                <h2 className="mt-3 text-lg font-semibold text-slate-200">
+                <h3 className="mt-3 text-lg font-semibold text-slate-200">
                   Content Manager
-                </h2>
+                </h3>
                 <p className="mt-2 text-sm text-slate-400">
-                  Upload images, update listings, manage homepage items.
+                  Add products, upload images and manage homepage banners.
                 </p>
               </div>
               <div className="rounded-2xl bg-violet-500/10 p-4">
@@ -380,13 +421,13 @@ export default function AdminDashboard() {
         </div>
 
         {message && (
-          <div className="mb-6 rounded-2xl border border-emerald-500/20 bg-emerald-500/10 px-4 py-3 text-sm text-emerald-300">
+          <div className="mb-5 rounded-2xl border border-emerald-500/20 bg-emerald-500/10 px-4 py-3 text-sm text-emerald-300">
             {message}
           </div>
         )}
 
         {error && (
-          <div className="mb-6 rounded-2xl border border-red-500/20 bg-red-500/10 px-4 py-3 text-sm text-red-300">
+          <div className="mb-5 rounded-2xl border border-red-500/20 bg-red-500/10 px-4 py-3 text-sm text-red-300">
             {error}
           </div>
         )}
@@ -397,9 +438,9 @@ export default function AdminDashboard() {
               clearAlerts();
               setActiveTab("products");
             }}
-            className={`rounded-xl px-5 py-2.5 text-sm font-semibold transition ${
+            className={`rounded-2xl px-5 py-3 text-sm font-semibold transition ${
               activeTab === "products"
-                ? "bg-cyan-500 text-white"
+                ? "bg-cyan-500 text-white shadow-lg shadow-cyan-500/20"
                 : "border border-slate-700 bg-slate-900 text-slate-300"
             }`}
           >
@@ -411,9 +452,9 @@ export default function AdminDashboard() {
               clearAlerts();
               setActiveTab("banners");
             }}
-            className={`rounded-xl px-5 py-2.5 text-sm font-semibold transition ${
+            className={`rounded-2xl px-5 py-3 text-sm font-semibold transition ${
               activeTab === "banners"
-                ? "bg-emerald-500 text-white"
+                ? "bg-emerald-500 text-white shadow-lg shadow-emerald-500/20"
                 : "border border-slate-700 bg-slate-900 text-slate-300"
             }`}
           >
@@ -422,8 +463,8 @@ export default function AdminDashboard() {
         </div>
 
         {activeTab === "products" ? (
-          <div className="grid gap-6 xl:grid-cols-[480px_minmax(0,1fr)]">
-            <section className="rounded-3xl border border-slate-800 bg-slate-900/95 p-6 shadow-xl shadow-black/10">
+          <div className="grid gap-6 xl:grid-cols-[420px_minmax(0,1fr)]">
+            <section className="rounded-3xl border border-slate-800 bg-slate-900/95 p-5 shadow-xl shadow-black/10">
               <div className="mb-5 flex items-center justify-between">
                 <h3 className="text-xl font-semibold">
                   {editingProductId ? "Edit Product" : "Add Product"}
@@ -438,14 +479,14 @@ export default function AdminDashboard() {
                     }}
                     className="text-sm text-slate-400 hover:text-white"
                   >
-                    Cancel edit
+                    Cancel
                   </button>
                 )}
               </div>
 
               <form onSubmit={handleProductSubmit} className="space-y-4">
                 <div>
-                  <label className="mb-2 block text-sm text-slate-300">
+                  <label className="mb-2 block text-sm font-medium text-slate-300">
                     Product Name
                   </label>
                   <input
@@ -458,12 +499,12 @@ export default function AdminDashboard() {
                       }))
                     }
                     required
-                    className="w-full rounded-2xl border border-slate-700 bg-slate-800 px-4 py-3 text-white outline-none focus:border-cyan-500"
+                    className="w-full rounded-2xl border border-slate-700 bg-slate-800 px-4 py-3 text-white outline-none transition focus:border-cyan-500"
                   />
                 </div>
 
                 <div>
-                  <label className="mb-2 block text-sm text-slate-300">
+                  <label className="mb-2 block text-sm font-medium text-slate-300">
                     Description
                   </label>
                   <textarea
@@ -475,12 +516,12 @@ export default function AdminDashboard() {
                         description: e.target.value,
                       }))
                     }
-                    className="w-full rounded-2xl border border-slate-700 bg-slate-800 px-4 py-3 text-white outline-none focus:border-cyan-500"
+                    className="w-full rounded-2xl border border-slate-700 bg-slate-800 px-4 py-3 text-white outline-none transition focus:border-cyan-500"
                   />
                 </div>
 
                 <div>
-                  <label className="mb-2 block text-sm text-slate-300">
+                  <label className="mb-2 block text-sm font-medium text-slate-300">
                     Price
                   </label>
                   <input
@@ -493,7 +534,7 @@ export default function AdminDashboard() {
                       }))
                     }
                     placeholder="$99"
-                    className="w-full rounded-2xl border border-slate-700 bg-slate-800 px-4 py-3 text-white outline-none focus:border-cyan-500"
+                    className="w-full rounded-2xl border border-slate-700 bg-slate-800 px-4 py-3 text-white outline-none transition focus:border-cyan-500"
                   />
                 </div>
 
@@ -528,7 +569,7 @@ export default function AdminDashboard() {
               </form>
             </section>
 
-            <section className="rounded-3xl border border-slate-800 bg-slate-900/95 p-6 shadow-xl shadow-black/10">
+            <section className="rounded-3xl border border-slate-800 bg-slate-900/95 p-5 shadow-xl shadow-black/10">
               <div className="mb-5 flex items-center justify-between">
                 <h3 className="text-xl font-semibold">Products List</h3>
                 {loadingProducts && (
@@ -548,7 +589,7 @@ export default function AdminDashboard() {
                   products.map((product) => (
                     <div
                       key={product.id}
-                      className="rounded-3xl border border-slate-800 bg-[#030b1d] p-4"
+                      className="rounded-3xl border border-slate-800 bg-[#040d20] p-4"
                     >
                       <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
                         <div className="flex gap-4">
@@ -566,7 +607,7 @@ export default function AdminDashboard() {
                             )}
                           </div>
 
-                          <div>
+                          <div className="min-w-0">
                             <h4 className="text-lg font-semibold text-white">
                               {product.name}
                             </h4>
@@ -608,8 +649,8 @@ export default function AdminDashboard() {
             </section>
           </div>
         ) : (
-          <div className="grid gap-6 xl:grid-cols-[480px_minmax(0,1fr)]">
-            <section className="rounded-3xl border border-slate-800 bg-slate-900/95 p-6 shadow-xl shadow-black/10">
+          <div className="grid gap-6 xl:grid-cols-[420px_minmax(0,1fr)]">
+            <section className="rounded-3xl border border-slate-800 bg-slate-900/95 p-5 shadow-xl shadow-black/10">
               <div className="mb-5 flex items-center justify-between">
                 <h3 className="text-xl font-semibold">
                   {editingBannerId ? "Edit Banner" : "Add Banner"}
@@ -624,14 +665,14 @@ export default function AdminDashboard() {
                     }}
                     className="text-sm text-slate-400 hover:text-white"
                   >
-                    Cancel edit
+                    Cancel
                   </button>
                 )}
               </div>
 
               <form onSubmit={handleBannerSubmit} className="space-y-4">
                 <div>
-                  <label className="mb-2 block text-sm text-slate-300">
+                  <label className="mb-2 block text-sm font-medium text-slate-300">
                     Banner Title
                   </label>
                   <input
@@ -644,12 +685,12 @@ export default function AdminDashboard() {
                       }))
                     }
                     required
-                    className="w-full rounded-2xl border border-slate-700 bg-slate-800 px-4 py-3 text-white outline-none focus:border-emerald-500"
+                    className="w-full rounded-2xl border border-slate-700 bg-slate-800 px-4 py-3 text-white outline-none transition focus:border-emerald-500"
                   />
                 </div>
 
                 <div>
-                  <label className="mb-2 block text-sm text-slate-300">
+                  <label className="mb-2 block text-sm font-medium text-slate-300">
                     Subtitle
                   </label>
                   <textarea
@@ -661,7 +702,7 @@ export default function AdminDashboard() {
                         subtitle: e.target.value,
                       }))
                     }
-                    className="w-full rounded-2xl border border-slate-700 bg-slate-800 px-4 py-3 text-white outline-none focus:border-emerald-500"
+                    className="w-full rounded-2xl border border-slate-700 bg-slate-800 px-4 py-3 text-white outline-none transition focus:border-emerald-500"
                   />
                 </div>
 
@@ -696,7 +737,7 @@ export default function AdminDashboard() {
               </form>
             </section>
 
-            <section className="rounded-3xl border border-slate-800 bg-slate-900/95 p-6 shadow-xl shadow-black/10">
+            <section className="rounded-3xl border border-slate-800 bg-slate-900/95 p-5 shadow-xl shadow-black/10">
               <div className="mb-5 flex items-center justify-between">
                 <h3 className="text-xl font-semibold">Banners List</h3>
                 {loadingBanners && (
@@ -716,7 +757,7 @@ export default function AdminDashboard() {
                   banners.map((banner) => (
                     <div
                       key={banner.id}
-                      className="rounded-3xl border border-slate-800 bg-[#030b1d] p-4"
+                      className="rounded-3xl border border-slate-800 bg-[#040d20] p-4"
                     >
                       <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
                         <div className="flex gap-4">
@@ -734,7 +775,7 @@ export default function AdminDashboard() {
                             )}
                           </div>
 
-                          <div>
+                          <div className="min-w-0">
                             <h4 className="text-lg font-semibold text-white">
                               {banner.title}
                             </h4>
@@ -774,4 +815,4 @@ export default function AdminDashboard() {
       </main>
     </div>
   );
-                               }
+                }
