@@ -505,42 +505,91 @@ export default function BetterLifeHomeCarePage() {
         )}
       </nav>
 
-      {/* ── Hero ── */}
-      <section className="relative overflow-hidden py-16 sm:py-20 lg:py-24">
-        <div className="hero-medical-bg" />
-        <div className="absolute inset-0 soft-grid pointer-events-none" />
+     {/* ── Hero ── */}
+      <section className="relative overflow-hidden py-16 sm:py-20 lg:py-28 bg-slate-50">
+        
+        {/* ── Premium Faceless Background ── */}
+        <div className="absolute inset-0 z-0">
+          {/* এই ছবিটি Unsplash এর একটি ফেসলেস ছবি (হাত ধরে থাকার দৃশ্য) যা খুব ইমোশনাল এবং প্রফেশনাল */}
+          <img 
+            src="https://images.unsplash.com/photo-1576765608535-5f04d1e3f289?auto=format&fit=crop&w=1920&q=80" 
+            alt="Compassionate home care" 
+            className="w-full h-full object-cover object-center"
+          />
+          {/* একটি সফট গ্রেডিয়েন্ট ওভারলে যা টেক্সটকে ক্লিয়ার করবে এবং প্রিমিয়াম লুক দেবে */}
+          <div className="absolute inset-0 bg-gradient-to-r from-white via-white/95 to-white/40" />
+          <div className="absolute inset-0 soft-grid pointer-events-none opacity-40" />
+        </div>
+
         <div className="max-w-6xl mx-auto px-4 relative z-10">
-          <div className="max-w-3xl text-center mx-auto lg:mx-0 lg:text-left">
-            <div className="inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-white/92 px-4 py-2 shadow-sm mb-6">
-              <span className="relative flex h-2 w-2"><span className="absolute inset-0 rounded-full bg-emerald-500 opacity-70" style={{ animation: "pulse-ring 1.8s ease-out infinite" }} /><span className="relative h-2 w-2 rounded-full bg-emerald-500" /></span>
-              <span className="text-[11px] font-bold text-emerald-700 uppercase tracking-widest">{isBn ? "বিশ্বস্ত হোমকেয়ার — বাংলাদেশ" : "Trusted HomeCare — Bangladesh"}</span>
+          <div className="max-w-2xl text-center mx-auto lg:mx-0 lg:text-left">
+            
+            {/* Top Badge */}
+            <div className="inline-flex items-center gap-2 rounded-full border border-emerald-100 bg-emerald-50/90 backdrop-blur-sm px-4 py-2 shadow-sm mb-6">
+              <span className="relative flex h-2.5 w-2.5">
+                <span className="absolute inset-0 rounded-full bg-emerald-500 opacity-60 animate-ping" />
+                <span className="relative h-2.5 w-2.5 rounded-full bg-emerald-600" />
+              </span>
+              <span className="text-xs font-bold text-emerald-800 uppercase tracking-wider">
+                {isBn ? "বিশ্বস্ত হোমকেয়ার" : "Trusted HomeCare"}
+              </span>
             </div>
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-slate-950 leading-[1.05] mb-5">
-              {isBn ? <><span className="better-shimmer">বিশ্বস্ত কেয়ারগিভার</span> এবং<br /><span className="text-slate-950">এক্সপার্ট নার্সিং কেয়ার—</span><br /><span className="text-slate-950">এখন আপনার দোরগোড়ায়</span></>
-                : <><span className="better-shimmer">Trusted Caregivers</span> &<br /><span className="text-slate-950">Expert Nursing Care—</span><br /><span className="text-slate-950">Now At Your Doorstep</span></>}
+
+            {/* Main Headline - Copy 1 (No dashes, no gradient text) */}
+            <h1 className="text-4xl sm:text-5xl lg:text-[54px] font-extrabold tracking-tight text-slate-900 leading-[1.18] mb-6">
+              {isBn ? (
+                <>
+                  নিজের বাড়িতেই আপনজনদের মাঝে<br />
+                  <span className="text-emerald-600">নিরাপদে সুস্থ</span> হয়ে উঠুন
+                </>
+              ) : (
+                <>
+                  Recover <span className="text-emerald-600">safely</span> at home surrounded by the ones you love
+                </>
+              )}
             </h1>
-            <p className="text-base sm:text-lg text-slate-600 leading-relaxed max-w-2xl mx-auto lg:mx-0 mb-8">
-              {isBn ? "ভেরিফায়েড কেয়ারগিভার, অভিজ্ঞ নার্স ও দক্ষ ফিজিওথেরাপিস্টের মাধ্যমে ২৪/৭ নিরাপদ হোম কেয়ার সাপোর্ট—আপনার পরিবারের জন্য, আপনার বাসাতেই।"
-                : "Verified caregivers, experienced nurses, and skilled physiotherapists delivering safe, dependable home care support for your family—right at home, 24/7."}
+
+            {/* Sub-headline */}
+            <p className="text-base sm:text-lg text-slate-600 leading-relaxed mb-10 max-w-xl mx-auto lg:mx-0 font-medium">
+              {isBn 
+                ? "আমরা নিশ্চিত করি আপনার প্রিয়জনের জন্য হাসপাতালাইজড কোয়ালিটির নার্সিং এবং প্রশিক্ষিত কেয়ারগিভার সাপোর্ট। এখন আর চিকিৎসার জন্য ঘর ছাড়তে হবে না।"
+                : "We ensure hospitalized quality nursing and trained caregiver support for your loved ones. No need to leave home for treatment anymore."}
             </p>
-            <div className="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start">
-              <button onClick={() => setConsultModal({ open: true, prefill: "" })} className="flex items-center justify-center gap-2 px-7 py-3.5 rounded-2xl font-bold text-white text-sm w-full sm:w-auto transition-all hover:scale-[1.02]" style={{ background: "linear-gradient(135deg,#0f9f81,#2563eb)", boxShadow: "0 14px 32px rgba(37,99,235,.18)" }}>
-                <MessageCircle className="h-4 w-4" />{isBn ? "ফ্রি কনসালটেশন নিন" : "Get Free Consultation"}<ArrowRight className="h-4 w-4" />
+
+            {/* CTA Buttons */}
+            <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+              <button 
+                onClick={() => setConsultModal({ open: true, prefill: "" })} 
+                className="flex items-center justify-center gap-2.5 px-8 py-4 rounded-2xl font-bold text-white text-sm w-full sm:w-auto transition-transform hover:-translate-y-1 shadow-lg shadow-emerald-600/20" 
+                style={{ background: "#059669" }}
+              >
+                <MessageCircle className="h-5 w-5" />
+                {isBn ? "ফ্রি কনসালটেশন নিন" : "Get Free Consultation"}
               </button>
-              <a href="#packages-caregiver"><button className="flex items-center justify-center gap-2 px-7 py-3.5 rounded-2xl font-bold text-slate-700 text-sm w-full sm:w-auto transition-all hover:scale-[1.02] border border-slate-200 bg-white shadow-sm">{isBn ? "প্যাকেজ দেখুন" : "Explore Packages"}</button></a>
+              <a href="#packages-caregiver" className="w-full sm:w-auto">
+                <button className="flex items-center justify-center gap-2.5 px-8 py-4 rounded-2xl font-bold text-slate-700 text-sm w-full transition-all hover:-translate-y-1 border border-slate-200 bg-white/90 backdrop-blur hover:border-emerald-300 hover:text-emerald-700 shadow-sm">
+                  {isBn ? "প্যাকেজ দেখুন" : "Explore Packages"}
+                  <ArrowRight className="h-4 w-4" />
+                </button>
+              </a>
             </div>
-            <div className="flex flex-wrap gap-2 justify-center lg:justify-start mt-6">
-              {[{ icon: BadgeCheck, label: isBn ? "ভেরিফায়েড কেয়ারগিভার" : "Verified Caregiver", color: "#2563eb" }, { icon: Clock, label: isBn ? "২৪/৭ সার্ভিস" : "24/7 Service", color: "#059669" }, { icon: Shield, label: isBn ? "ব্যাকগ্রাউন্ড চেকড" : "Background Checked", color: "#7c3aed" }, { icon: Zap, label: isBn ? "২৪ ঘণ্টায় রিপ্লেসমেন্ট" : "24hr Replacement", color: "#059669" }]
-                .map(({ icon: Icon, label, color }) => (
-                  <div key={label} className="flex items-center gap-1.5 rounded-full border border-white bg-white/88 px-3 py-1.5 shadow-sm">
-                    <Icon className="h-3 w-3" style={{ color }} /><span className="text-[11px] font-semibold text-slate-700">{label}</span>
+
+            {/* Feature Badges - Minimalist */}
+            <div className="flex flex-wrap gap-2.5 justify-center lg:justify-start mt-10">
+              {[
+                { icon: BadgeCheck, label: isBn ? "ভেরিফায়েড কর্মী" : "Verified Staff" }, 
+                { icon: Clock, label: isBn ? "২৪/৭ সার্ভিস" : "24/7 Service" }, 
+                { icon: Shield, label: isBn ? "ব্যাকগ্রাউন্ড চেকড" : "Background Checked" }
+              ].map(({ icon: Icon, label }) => (
+                <div key={label} className="flex items-center gap-2 rounded-xl bg-white/80 backdrop-blur-md border border-slate-100 px-3.5 py-2 shadow-sm">
+                  <div className="bg-emerald-100 p-1 rounded-md">
+                    <Icon className="h-3.5 w-3.5 text-emerald-600" />
                   </div>
-                ))}
+                  <span className="text-xs font-bold text-slate-700">{label}</span>
+                </div>
+              ))}
             </div>
-          </div>
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-10 max-w-3xl mx-auto lg:mx-0">
-            {[{ val: "৫০০+", label: isBn ? "রোগী সেবা" : "Patients Served", color: "#3b82f6" }, { val: "৫০+", label: isBn ? "Verified Caregiver" : "Verified Caregivers", color: "#8b5cf6" }, { val: "২৪/৭", label: isBn ? "সার্ভিস" : "Service Hours", color: "#ec4899" }, { val: "১০০%", label: isBn ? "Satisfaction গ্যারান্টি" : "Satisfaction Rate", color: "#f59e0b" }]
-              .map(s => <div key={s.label} className="rounded-2xl border border-slate-200/80 bg-white/90 px-3 py-4 text-center shadow-sm"><div className="text-2xl font-extrabold" style={{ color: s.color }}>{s.val}</div><div className="text-xs text-xs text-slate-500 font-medium mt-1">{s.label}</div></div>)}
+
           </div>
         </div>
       </section>
@@ -599,7 +648,7 @@ export default function BetterLifeHomeCarePage() {
             })}
           </div>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-            {[{ val: "৩ মাস+", lBn: "Training সময়কাল", lEn: "Training Duration", color: "#3b82f6" }, { val: "০ টাকা", lBn: "Hidden Charge নেই", lEn: "No Hidden Charges", color: "#10b981" }, { val: "২৪ ঘণ্টা", lBn: "Replacement গ্যারান্টি", lEn: "Replacement Guarantee", color: "#8b5cf6" }, { val: "১০০%", lBn: "Satisfaction গ্যারান্টি", lEn: "Satisfaction Guarantee", color: "#ec4899" }]
+            {[{ val: "3 Month+", lBn: "Training সময়কাল", lEn: "Training Duration", color: "#3b82f6" }, { val: "0 Extra Fee", lBn: "Hidden Charge নেই", lEn: "No Hidden Charges", color: "#10b981" }, { val: "24 Houres ", lBn: "Replacement গ্যারান্টি", lEn: "Replacement Guarantee", color: "#8b5cf6" }, { val: "100%", lBn: "Satisfaction গ্যারান্টি", lEn: "Satisfaction Guarantee", color: "#ec4899" }]
               .map(s => <Reveal key={s.lEn}><div className="rounded-2xl border border-slate-100 bg-white p-4 text-center shadow-sm card-hover"><div className="text-2xl font-extrabold mb-1" style={{ color: s.color }}>{s.val}</div><div className="text-[11px] text-slate-400 font-medium">{isBn ? s.lBn : s.lEn}</div></div></Reveal>)}
           </div>
         </div>
