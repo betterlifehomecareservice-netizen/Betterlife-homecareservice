@@ -673,7 +673,7 @@ export default function BetterLifeHomeCarePage() {
                     <BadgeCheck className="h-5 w-5 text-blue-600" />
                   </div>
                   <div>
-                    <p className="text-[11px] font-bold text-slate-900">{isBn ? "ভেরিফাইড কেয়ারগিভার" : "Verified Nurse"}</p>
+                    <p className="text-[11px] font-bold text-slate-900">{isBn ? "ভেরিফাইড কেয়ারগিভার" : "Verified Caregiver"}</p>
                     <p className="text-[10px] text-slate-400">{isBn ? "৩ মাস ট্রেনিং সম্পন্ন" : "3-month trained"}</p>
                   </div>
                 </div>
