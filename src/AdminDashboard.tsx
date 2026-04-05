@@ -28,9 +28,8 @@ type Product = {
 
 type Banner = {
   id: string;
-  title: string;
-  subtitle: string | null;
-  image_url: string | null;
+  desktop_image_url: string | null;
+  mobile_image_url: string | null;
   created_at?: string;
 };
 
@@ -44,9 +43,8 @@ const emptyProductForm = {
 };
 
 const emptyBannerForm = {
-  title: "",
-  subtitle: "",
-  image_url: "",
+  desktop_image_url: "",
+  mobile_image_url: "",
 };
 
 const textMap = {
@@ -74,9 +72,8 @@ const textMap = {
     noProducts: "No products found.",
     addBanner: "Add Banner",
     editBanner: "Edit Banner",
-    bannerTitle: "Banner Title",
-    subtitleLabel: "Subtitle",
-    bannerImage: "Banner Image",
+    bannerDesktopImage: "Desktop Banner Image",
+    bannerMobileImage: "Mobile Banner Image",
     updateBanner: "Update Banner",
     bannersList: "Banners List",
     noBanners: "No banners found.",
@@ -84,7 +81,7 @@ const textMap = {
     loading: "Loading...",
     saving: "Saving...",
     productRequired: "Product name is required.",
-    bannerRequired: "Banner title is required.",
+    bannerRequired: "Desktop and mobile banner images are required.",
     productAdded: "Product added successfully.",
     productUpdated: "Product updated successfully.",
     bannerAdded: "Banner added successfully.",
@@ -118,9 +115,8 @@ const textMap = {
     noProducts: "কোনো প্রোডাক্ট পাওয়া যায়নি।",
     addBanner: "ব্যানার যোগ করুন",
     editBanner: "ব্যানার এডিট করুন",
-    bannerTitle: "ব্যানারের শিরোনাম",
-    subtitleLabel: "সাবটাইটেল",
-    bannerImage: "ব্যানারের ছবি",
+    bannerDesktopImage: "ডেস্কটপ ব্যানার ছবি",
+    bannerMobileImage: "মোবাইল ব্যানার ছবি",
     updateBanner: "ব্যানার আপডেট করুন",
     bannersList: "ব্যানার লিস্ট",
     noBanners: "কোনো ব্যানার পাওয়া যায়নি।",
@@ -128,7 +124,7 @@ const textMap = {
     loading: "লোড হচ্ছে...",
     saving: "সেভ হচ্ছে...",
     productRequired: "প্রোডাক্টের নাম দিতে হবে।",
-    bannerRequired: "ব্যানারের শিরোনাম দিতে হবে।",
+    bannerRequired: "ডেস্কটপ এবং মোবাইল দুই সাইজের ব্যানার ছবি দিতে হবে।",
     productAdded: "প্রোডাক্ট সফলভাবে যোগ হয়েছে।",
     productUpdated: "প্রোডাক্ট সফলভাবে আপডেট হয়েছে।",
     bannerAdded: "ব্যানার সফলভাবে যোগ হয়েছে।",
@@ -218,7 +214,7 @@ export default function AdminDashboard() {
 
     const { data, error } = await supabase
       .from("banners")
-      .select("*")
+      .select("id, desktop_image_url, mobile_image_url, created_at")
       .order("created_at", { ascending: false });
 
     if (error) setError(error.message);
@@ -276,12 +272,11 @@ export default function AdminDashboard() {
     setSaving(true);
 
     const payload = {
-      title: bannerForm.title.trim(),
-      subtitle: bannerForm.subtitle.trim() || null,
-      image_url: bannerForm.image_url.trim() || null,
+      desktop_image_url: bannerForm.desktop_image_url.trim() || null,
+      mobile_image_url: bannerForm.mobile_image_url.trim() || null,
     };
 
-    if (!payload.title) {
+    if (!payload.desktop_image_url || !payload.mobile_image_url) {
       setError(t.bannerRequired);
       setSaving(false);
       return;
@@ -325,9 +320,8 @@ export default function AdminDashboard() {
     setActiveTab("banners");
     setEditingBannerId(banner.id);
     setBannerForm({
-      title: banner.title || "",
-      subtitle: banner.subtitle || "",
-      image_url: banner.image_url || "",
+      desktop_image_url: banner.desktop_image_url || "",
+      mobile_image_url: banner.mobile_image_url || "",
     });
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
@@ -717,31 +711,17 @@ export default function AdminDashboard() {
               </div>
 
               <form onSubmit={handleBannerSubmit} className="space-y-4">
-                <div>
-                  <label className="mb-2 block text-sm font-medium text-slate-300">{t.bannerTitle}</label>
-                  <input
-                    type="text"
-                    value={bannerForm.title}
-                    onChange={(e) => setBannerForm((prev) => ({ ...prev, title: e.target.value }))}
-                    required
-                    className="w-full rounded-2xl border border-slate-700 bg-slate-800 px-4 py-3 text-white outline-none transition focus:border-emerald-500"
-                  />
-                </div>
-
-                <div>
-                  <label className="mb-2 block text-sm font-medium text-slate-300">{t.subtitleLabel}</label>
-                  <textarea
-                    rows={4}
-                    value={bannerForm.subtitle}
-                    onChange={(e) => setBannerForm((prev) => ({ ...prev, subtitle: e.target.value }))}
-                    className="w-full rounded-2xl border border-slate-700 bg-slate-800 px-4 py-3 text-white outline-none transition focus:border-emerald-500"
-                  />
-                </div>
+                <ImageUpload
+                  label={t.bannerDesktopImage}
+                  value={bannerForm.desktop_image_url}
+                  onChange={(url) => setBannerForm((prev) => ({ ...prev, desktop_image_url: url }))}
+                  language={language}
+                />
 
                 <ImageUpload
-                  label={t.bannerImage}
-                  value={bannerForm.image_url}
-                  onChange={(url) => setBannerForm((prev) => ({ ...prev, image_url: url }))}
+                  label={t.bannerMobileImage}
+                  value={bannerForm.mobile_image_url}
+                  onChange={(url) => setBannerForm((prev) => ({ ...prev, mobile_image_url: url }))}
                   language={language}
                 />
 
@@ -786,21 +766,30 @@ export default function AdminDashboard() {
                     <div key={banner.id} className="rounded-3xl border border-slate-800 bg-[#040d20] p-4">
                       <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
                         <div className="flex gap-4">
-                          <div className="h-24 w-32 flex-shrink-0 overflow-hidden rounded-2xl bg-slate-800">
-                            {banner.image_url ? (
-                              <img src={banner.image_url} alt={banner.title} className="h-full w-full object-cover" />
-                            ) : (
-                              <div className="flex h-full w-full items-center justify-center text-slate-500">
-                                <ImageIcon className="h-8 w-8" />
-                              </div>
-                            )}
+                          <div className="grid grid-cols-2 gap-3">
+                            <div className="h-24 w-32 flex-shrink-0 overflow-hidden rounded-2xl bg-slate-800">
+                              {banner.desktop_image_url ? (
+                                <img src={banner.desktop_image_url} alt="Desktop banner" className="h-full w-full object-cover" />
+                              ) : (
+                                <div className="flex h-full w-full items-center justify-center text-slate-500">
+                                  <ImageIcon className="h-8 w-8" />
+                                </div>
+                              )}
+                            </div>
+                            <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-2xl bg-slate-800">
+                              {banner.mobile_image_url ? (
+                                <img src={banner.mobile_image_url} alt="Mobile banner" className="h-full w-full object-cover" />
+                              ) : (
+                                <div className="flex h-full w-full items-center justify-center text-slate-500">
+                                  <ImageIcon className="h-8 w-8" />
+                                </div>
+                              )}
+                            </div>
                           </div>
 
                           <div className="min-w-0">
-                            <h4 className="text-lg font-semibold text-white">{banner.title}</h4>
-                            {banner.subtitle && (
-                              <p className="mt-2 max-w-xl text-sm text-slate-400">{banner.subtitle}</p>
-                            )}
+                            <h4 className="text-lg font-semibold text-white">{language === "bn" ? "হোমপেজ ব্যানার" : "Homepage Banner"}</h4>
+                            <p className="mt-2 max-w-xl text-sm text-slate-400">{language === "bn" ? "ডেস্কটপ এবং মোবাইলের জন্য আলাদা ইমেজ ব্যবহার হবে।" : "Separate images will be used for desktop and mobile."}</p>
                           </div>
                         </div>
 
