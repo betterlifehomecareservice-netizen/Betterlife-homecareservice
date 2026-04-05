@@ -5,7 +5,7 @@ import {
   ClipboardCheck, Clock, FileSearch, Heart, HeartPulse,
   Home, MapPin, Menu, MessageCircle, Phone, RefreshCw, Search,
   Shield, ShoppingCart, Star, Stethoscope, Users, UserCheck,
-  X, Zap,
+  X,
 } from "lucide-react";
 import { supabase } from "./lib/supabase";
 
@@ -531,101 +531,154 @@ export default function BetterLifeHomeCarePage() {
         )}
       </nav>
 
-     {/* ── Hero ── */}
-      <section className="relative overflow-hidden py-16 sm:py-20 lg:py-28">
-
-        {/* Background Image */}
-        <div className="absolute inset-0 z-0">
-          <picture>
-            <source media="(max-width: 767px)" srcSet={heroMobileImage} />
-            <img
-              src={heroDesktopImage}
-              alt="BetterLife HomeCare Banner"
-              className="w-full h-full object-cover object-[78%_center] md:object-[60%_center] lg:object-center"
-            />
-          </picture>
-          {/* Strong overlay so text is always readable */}
-          <div className="absolute inset-0 bg-gradient-to-r from-white/70 via-white/40 to-transparent md:from-white/60 md:via-white/30 md:to-transparent" />
-          <div className="absolute inset-0 bg-black/20 md:bg-black/10" />
-          <div className="absolute inset-0 soft-grid pointer-events-none opacity-10" />
-        </div>
+      {/* ── Hero ── */}
+      <section className="relative overflow-hidden bg-gradient-to-br from-slate-50 via-emerald-50/30 to-teal-50/20">
+        {/* Subtle grid texture */}
+        <div className="absolute inset-0 soft-grid opacity-40 pointer-events-none" />
 
         <div className="max-w-6xl mx-auto px-4 relative z-10">
-          <div className="max-w-2xl">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-0 min-h-[88vh] lg:min-h-[82vh] items-center">
 
-            {/* Glass Card */}
-            <div className="rounded-[28px] bg-white/92 backdrop-blur-md border border-white/70 shadow-[0_12px_40px_rgba(15,23,42,0.14)] px-5 py-6 sm:px-8 sm:py-8">
+            {/* ── LEFT: Text Content ── */}
+            <div className="py-14 sm:py-16 lg:py-20 pr-0 lg:pr-10 order-2 lg:order-1">
 
-              {/* Top Badge */}
-              <div className="inline-flex items-center gap-2 rounded-full border border-emerald-100 bg-emerald-50 px-4 py-2 shadow-sm mb-5">
+              {/* Live badge */}
+              <div className="inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-emerald-50 px-4 py-2 shadow-sm mb-6">
                 <span className="relative flex h-2.5 w-2.5">
                   <span className="absolute inset-0 rounded-full bg-emerald-500 opacity-60 animate-ping" />
                   <span className="relative h-2.5 w-2.5 rounded-full bg-emerald-600" />
                 </span>
-                <span className="text-[12px] sm:text-[13px] font-bold text-emerald-800 uppercase tracking-[0.14em]">
+                <span className="text-[12px] font-bold text-emerald-800 uppercase tracking-[0.15em]">
                   {isBn ? "বিশ্বস্ত হোমকেয়ার সার্ভিস" : "Trusted HomeCare Service"}
                 </span>
               </div>
 
-              {/* Main Heading */}
-              <h1 className="text-[2rem] sm:text-5xl lg:text-[52px] font-extrabold tracking-tight text-slate-950 leading-[1.08] mb-4">
+              {/* Main heading */}
+              <h1 className="text-[2.1rem] sm:text-[2.6rem] lg:text-[3.1rem] font-extrabold tracking-tight text-slate-900 leading-[1.12] mb-5">
                 {isBn ? (
                   <>
-                    নিজের বাড়িতেই আপনজনদের মাঝে
+                    নিজের বাড়িতেই
+                    <br />
+                    আপনজনদের মাঝে
                     <br />
                     <span className="text-emerald-600">নিরাপদে সুস্থ</span> হয়ে উঠুন
                   </>
                 ) : (
                   <>
-                    Recover <span className="text-emerald-600">safely</span> at home
+                    Recover <span className="text-emerald-600">safely</span>
                     <br />
-                    surrounded by the ones you love
+                    at home surrounded
+                    <br />
+                    by the ones you love
                   </>
                 )}
               </h1>
 
-              {/* Subtitle — now on solid white card, always readable */}
-              <p className="text-[15px] sm:text-[17px] text-slate-700 font-medium leading-[1.85] mb-7">
+              {/* Subtitle — clean bg, always 100% readable */}
+              <p className="text-[15px] sm:text-[16.5px] text-slate-600 leading-[1.9] mb-8 max-w-lg font-normal">
                 {isBn
-                  ? "আমরা নিশ্চিত করি আপনার প্রিয়জনের জন্য হাসপাতালাইজড কোয়ালিটির নার্সিং এবং প্রশিক্ষিত কেয়ারগিভার সাপোর্ট। এখন আর চিকিৎসার জন্য ঘর ছাড়তে হবে না।"
-                  : "We ensure hospitalized quality nursing and trained caregiver support for your loved ones. No need to leave home for treatment anymore."}
+                  ? "আপনার প্রিয়জনের জন্য হাসপাতাল মানের নার্সিং ও প্রশিক্ষিত কেয়ারগিভার — এখন সরাসরি আপনার বাড়িতে। চিকিৎসার জন্য আর ঘর ছাড়তে হবে না।"
+                  : "Hospital-quality nursing and trained caregiver support — delivered right to your home. No need to leave for treatment anymore."}
               </p>
 
               {/* CTA Buttons */}
-              <div className="flex flex-col sm:flex-row gap-3 mb-6">
+              <div className="flex flex-col sm:flex-row gap-3 mb-8">
                 <button
                   onClick={() => setConsultModal({ open: true, prefill: "" })}
-                  className="inline-flex items-center justify-center gap-2 px-6 sm:px-8 py-4 rounded-2xl min-h-[54px] bg-emerald-500 hover:bg-emerald-600 text-white font-bold text-sm shadow-[0_10px_24px_rgba(16,185,129,0.30)] transition-all"
+                  className="inline-flex items-center justify-center gap-2.5 px-7 py-4 rounded-2xl font-bold text-white text-sm bg-emerald-500 hover:bg-emerald-600 shadow-[0_8px_24px_rgba(16,185,129,0.35)] transition-all hover:scale-[1.02] active:scale-[0.98]"
                 >
                   <MessageCircle className="h-4 w-4" />
                   {isBn ? "ফ্রি কনসালটেশন নিন" : "Get Free Consultation"}
                 </button>
                 <a
                   href="#packages-caregiver"
-                  className="inline-flex items-center justify-center gap-2 px-6 sm:px-8 py-4 rounded-2xl min-h-[54px] bg-white text-slate-800 font-bold text-sm border border-slate-200 hover:border-slate-300 hover:bg-slate-50 shadow-sm transition-all"
+                  className="inline-flex items-center justify-center gap-2 px-7 py-4 rounded-2xl font-bold text-slate-700 text-sm bg-white border border-slate-200 hover:border-emerald-300 hover:text-emerald-700 shadow-sm transition-all hover:scale-[1.02]"
                 >
-                  {isBn ? "প্যাকেজ দেখুন" : "Explore Packages"} →
+                  {isBn ? "প্যাকেজ দেখুন" : "Explore Packages"}
+                  <ArrowRight className="h-4 w-4" />
                 </a>
               </div>
 
-              {/* Trust Badges */}
+              {/* Trust badges */}
               <div className="flex flex-wrap gap-2.5">
                 {[
-                  { emoji: "🛡️", label: isBn ? "ভেরিফাইড স্টাফ" : "Verified Staff" },
-                  { emoji: "🕒", label: isBn ? "২৪/৭ সার্ভিস" : "24/7 Service" },
-                  { emoji: "✅", label: isBn ? "ব্যাকগ্রাউন্ড চেকড" : "Background Checked" },
-                ].map(({ emoji, label }) => (
+                  { icon: Shield, label: isBn ? "ভেরিফাইড স্টাফ" : "Verified Staff", color: "#059669" },
+                  { icon: Clock,  label: isBn ? "২৪/৭ সার্ভিস" : "24/7 Service",    color: "#2563eb" },
+                  { icon: BadgeCheck, label: isBn ? "ব্যাকগ্রাউন্ড চেকড" : "Background Checked", color: "#7c3aed" },
+                ].map(({ icon: Icon, label, color }) => (
                   <div
                     key={label}
-                    className="inline-flex items-center gap-2 px-4 py-2.5 rounded-2xl bg-slate-50 border border-slate-200 text-sm font-semibold text-slate-700"
+                    className="inline-flex items-center gap-2 px-4 py-2.5 rounded-2xl bg-white border border-slate-200 shadow-sm text-sm font-semibold text-slate-700"
                   >
-                    <span>{emoji}</span>
-                    <span>{label}</span>
+                    <Icon className="h-3.5 w-3.5" style={{ color }} />
+                    {label}
                   </div>
                 ))}
               </div>
 
+              {/* Social proof mini row */}
+              <div className="flex items-center gap-3 mt-7">
+                <div className="flex -space-x-2">
+                  {["#10b981","#3b82f6","#8b5cf6","#f59e0b"].map((c, i) => (
+                    <div key={i} className="h-8 w-8 rounded-full border-2 border-white flex items-center justify-center text-white text-xs font-bold" style={{ background: c }}>
+                      {["র","ন","ফ","ম"][i]}
+                    </div>
+                  ))}
+                </div>
+                <div>
+                  <div className="flex items-center gap-0.5 mb-0.5">
+                    {[1,2,3,4,5].map(i => <Star key={i} className="h-3.5 w-3.5 fill-amber-400 text-amber-400" />)}
+                  </div>
+                  <p className="text-xs text-slate-500 font-medium">
+                    {isBn ? "২০০+ পরিবার আমাদের বিশ্বাস করে" : "200+ families trust us"}
+                  </p>
+                </div>
+              </div>
             </div>
+
+            {/* ── RIGHT: Image ── */}
+            <div className="relative order-1 lg:order-2 flex items-center justify-center lg:justify-end py-8 lg:py-0">
+              {/* Decorative blob behind image */}
+              <div className="absolute right-0 top-1/2 -translate-y-1/2 w-[420px] h-[420px] rounded-full opacity-20 blur-3xl pointer-events-none"
+                style={{ background: "radial-gradient(circle, #10b981 0%, #3b82f6 60%, transparent 100%)" }} />
+
+              {/* Image container */}
+              <div className="relative w-full max-w-[480px] lg:max-w-none">
+                {/* Floating card — top left */}
+                <div className="absolute -left-4 top-10 z-20 hidden sm:flex items-center gap-2.5 bg-white rounded-2xl px-4 py-3 shadow-[0_8px_24px_rgba(15,23,42,0.12)] border border-slate-100 animate-[float_3s_ease-in-out_infinite]">
+                  <div className="h-9 w-9 rounded-xl bg-emerald-100 flex items-center justify-center flex-shrink-0">
+                    <HeartPulse className="h-5 w-5 text-emerald-600" />
+                  </div>
+                  <div>
+                    <p className="text-[11px] font-bold text-slate-900">{isBn ? "২৪ ঘণ্টা সেবা" : "24/7 Care"}</p>
+                    <p className="text-[10px] text-slate-400">{isBn ? "সবসময় পাশে আছি" : "Always available"}</p>
+                  </div>
+                </div>
+
+                {/* Floating card — bottom right */}
+                <div className="absolute -right-4 bottom-10 z-20 hidden sm:flex items-center gap-2.5 bg-white rounded-2xl px-4 py-3 shadow-[0_8px_24px_rgba(15,23,42,0.12)] border border-slate-100 animate-[float_3s_ease-in-out_0.8s_infinite]">
+                  <div className="h-9 w-9 rounded-xl bg-blue-100 flex items-center justify-center flex-shrink-0">
+                    <BadgeCheck className="h-5 w-5 text-blue-600" />
+                  </div>
+                  <div>
+                    <p className="text-[11px] font-bold text-slate-900">{isBn ? "ভেরিফাইড নার্স" : "Verified Nurse"}</p>
+                    <p className="text-[10px] text-slate-400">{isBn ? "৩ মাস ট্রেনিং সম্পন্ন" : "3-month trained"}</p>
+                  </div>
+                </div>
+
+                {/* Main image */}
+                <div className="relative rounded-[28px] overflow-hidden shadow-[0_24px_64px_rgba(15,23,42,0.18)] border-4 border-white">
+                  <img
+                    src={heroDesktopImage}
+                    alt="BetterLife HomeCare"
+                    className="w-full h-[420px] sm:h-[500px] lg:h-[560px] object-cover object-center"
+                  />
+                  {/* Subtle bottom fade */}
+                  <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-black/20 to-transparent" />
+                </div>
+              </div>
+            </div>
+
           </div>
         </div>
       </section>
