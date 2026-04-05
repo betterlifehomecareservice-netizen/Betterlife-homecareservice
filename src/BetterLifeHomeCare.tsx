@@ -536,71 +536,98 @@ export default function BetterLifeHomeCarePage() {
         
         {/* ── Premium Faceless Background ── */}
         <div className="absolute inset-0 z-0">
-          <picture>
-            <source media="(max-width: 767px)" srcSet={heroMobileImage} />
-            <img
-              src={heroDesktopImage}
-              alt="BetterLife HomeCare Banner"
-              className="w-full h-full object-cover object-[76%_center] md:object-[58%_center] lg:object-center"
-            />
-          </picture>
-          <div className="absolute inset-0 bg-gradient-to-r from-white/18 via-white/8 to-transparent md:from-white/52 md:via-white/22 md:to-transparent" />
-          <div className="absolute inset-0 bg-black/28 md:bg-black/10" />
-          <div className="absolute inset-0 soft-grid pointer-events-none opacity-12" />
+  <picture>
+    <source media="(max-width: 767px)" srcSet={heroMobileImage} />
+    <img
+      src={heroDesktopImage}
+      alt="BetterLife HomeCare Banner"
+      className="w-full h-full object-cover object-[78%_center] md:object-[60%_center] lg:object-center"
+    />
+  </picture>
+
+  <div className="absolute inset-0 bg-gradient-to-r from-white/8 via-white/4 to-transparent md:from-white/24 md:via-white/10 md:to-transparent" />
+  <div className="absolute inset-0 bg-black/16 md:bg-black/6" />
+  <div className="absolute inset-0 soft-grid pointer-events-none opacity-10" />
+</div>
+
+<div className="max-w-6xl mx-auto px-4 relative z-10">
+  <div className="max-w-2xl text-center mx-auto lg:mx-0 lg:text-left px-4 sm:px-6 md:px-0">
+    <div className="inline-block w-full rounded-[28px] bg-white/84 md:bg-white/70 backdrop-blur-md border border-white/60 shadow-[0_10px_30px_rgba(15,23,42,0.10)] px-5 py-5 sm:px-7 sm:py-7">
+
+      {/* Top Badge */}
+      <div className="inline-flex items-center gap-2 rounded-full border border-emerald-100 bg-emerald-50/95 px-4 py-2 shadow-sm mb-5">
+        <span className="relative flex h-2.5 w-2.5">
+          <span className="absolute inset-0 rounded-full bg-emerald-500 opacity-60 animate-ping" />
+          <span className="relative h-2.5 w-2.5 rounded-full bg-emerald-600" />
+        </span>
+        <span className="text-[12px] sm:text-[13px] font-bold text-emerald-800 uppercase tracking-[0.14em]">
+          {isBn ? "বিশ্বস্ত হোমকেয়ার সার্ভিস" : "Trusted HomeCare Service"}
+        </span>
+      </div>
+
+      {/* Main Heading */}
+      <h1 className="text-[2.2rem] sm:text-5xl lg:text-[54px] font-extrabold tracking-tight text-slate-950 leading-[1.06] sm:leading-[1.12] mb-4 sm:mb-5">
+        {isBn ? (
+          <>
+            নিজের বাড়িতেই আপনজনদের মাঝে
+            <br />
+            <span className="text-emerald-600">নিরাপদে সুস্থ</span> হয়ে উঠুন
+          </>
+        ) : (
+          <>
+            Recover <span className="text-emerald-600">safely</span> at home
+            <br />
+            surrounded by the ones you love
+          </>
+        )}
+      </h1>
+
+      {/* Sub Heading */}
+      <p className="text-[15px] sm:text-lg text-slate-700 leading-[1.8] mb-8 sm:mb-10 max-w-xl mx-auto lg:mx-0 font-medium">
+        {isBn
+          ? "আমরা নিশ্চিত করি আপনার প্রিয়জনের জন্য হাসপাতালাইজড কোয়ালিটির নার্সিং এবং প্রশিক্ষিত কেয়ারগিভার সাপোর্ট। এখন আর চিকিৎসার জন্য ঘর ছাড়তে হবে না।"
+          : "We ensure hospitalized quality nursing and trained caregiver support for your loved ones. No need to leave home for treatment anymore."}
+      </p>
+
+      {/* CTA Buttons */}
+      <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 w-full sm:w-auto mb-6">
+        <a
+          href="#contact"
+          className="inline-flex items-center justify-center gap-2 px-6 sm:px-8 py-4 rounded-2xl min-h-[56px] bg-emerald-500 hover:bg-emerald-600 text-white font-bold shadow-[0_10px_24px_rgba(16,185,129,0.28)] transition-all"
+        >
+          <span>{isBn ? "ফ্রি কনসালটেশন নিন" : "Get Free Consultation"}</span>
+        </a>
+
+        <a
+          href="#packages"
+          className="inline-flex items-center justify-center gap-2 px-6 sm:px-8 py-4 rounded-2xl min-h-[56px] bg-white text-slate-700 font-bold border border-slate-200 hover:border-slate-300 hover:bg-slate-50 shadow-sm transition-all"
+        >
+          <span>{isBn ? "প্যাকেজ দেখুন" : "Explore Packages"}</span>
+          <span>→</span>
+        </a>
+      </div>
+
+      {/* Trust Badges */}
+      <div className="flex flex-wrap gap-3 sm:gap-4 pt-1 justify-center lg:justify-start">
+        <div className="inline-flex items-center gap-2 px-4 sm:px-5 py-3 rounded-2xl bg-white/92 backdrop-blur-sm shadow-sm border border-emerald-100 text-sm font-semibold text-slate-700">
+          <span className="text-emerald-600">🛡️</span>
+          <span>{isBn ? "ভেরিফাইড স্টাফ" : "Verified Staff"}</span>
         </div>
 
-        <div className="max-w-6xl mx-auto px-4 relative z-10">
-          <div className="max-w-2xl text-center mx-auto lg:mx-0 lg:text-left px-4 sm:px-6 md:px-0">
-            
-            {/* Top Badge */}
-            <div className="inline-flex items-center gap-2 rounded-full border border-emerald-100 bg-emerald-50/90 backdrop-blur-sm px-4 py-2 shadow-sm mb-6">
-              <span className="relative flex h-2.5 w-2.5">
-                <span className="absolute inset-0 rounded-full bg-emerald-500 opacity-60 animate-ping" />
-                <span className="relative h-2.5 w-2.5 rounded-full bg-emerald-600" />
-              </span>
-              <span className="text-xs font-bold text-emerald-800 uppercase tracking-wider">
-                {isBn ? "বিশ্বস্ত হোমকেয়ার সার্ভিস" : "Trusted HomeCare Service"}
-              </span>
-            </div>
+        <div className="inline-flex items-center gap-2 px-4 sm:px-5 py-3 rounded-2xl bg-white/92 backdrop-blur-sm shadow-sm border border-emerald-100 text-sm font-semibold text-slate-700">
+          <span className="text-emerald-600">🕒</span>
+          <span>{isBn ? "২৪/৭ সার্ভিস" : "24/7 Service"}</span>
+        </div>
 
-            {/* Main Headline - Copy 1 (No dashes, no gradient text) */}
-            <h1 className="text-[2.35rem] sm:text-5xl lg:text-[54px] font-extrabold tracking-tight text-slate-900 leading-[1.04] sm:leading-[1.12] mb-4 sm:mb-6 drop-shadow-[0_1px_1px_rgba(255,255,255,0.35)]">
-              {isBn ? (
-                <>
-                  নিজের বাড়িতেই আপনজনদের মাঝে<br />
-                  <span className="text-emerald-600">নিরাপদে সুস্থ</span> হয়ে উঠুন
-                </>
-              ) : (
-                <>
-                  Recover <span className="text-emerald-600">safely</span> at home surrounded by the ones you love
-                </>
-              )}
-            </h1>
+        <div className="inline-flex items-center gap-2 px-4 sm:px-5 py-3 rounded-2xl bg-white/92 backdrop-blur-sm shadow-sm border border-emerald-100 text-sm font-semibold text-slate-700">
+          <span className="text-emerald-600">✓</span>
+          <span>{isBn ? "ব্যাকগ্রাউন্ড চেকড" : "Background Checked"}</span>
+        </div>
+      </div>
 
-            {/* Sub-headline */}
-            <p className="text-[15px] sm:text-lg text-slate-700 leading-[1.75] mb-8 sm:mb-10 max-w-xl mx-auto lg:mx-0 font-medium bg-white/38 md:bg-white/18 backdrop-blur-[2px] rounded-2xl px-3 py-2 sm:px-0 sm:py-0">
-              {isBn 
-                ? "আমরা নিশ্চিত করি আপনার প্রিয়জনের জন্য হাসপাতালাইজড কোয়ালিটির নার্সিং এবং প্রশিক্ষিত কেয়ারগিভার সাপোর্ট। এখন আর চিকিৎসার জন্য ঘর ছাড়তে হবে না।"
-                : "We ensure hospitalized quality nursing and trained caregiver support for your loved ones. No need to leave home for treatment anymore."}
-            </p>
-
-            {/* CTA Buttons */}
-            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 w-full sm:w-auto justify-center lg:justify-start">
-              <button 
-                onClick={() => setConsultModal({ open: true, prefill: "" })} 
-                className="flex items-center justify-center gap-2.5 px-6 sm:px-8 py-4 rounded-2xl min-h-[56px] font-bold text-white text-sm w-full sm:w-auto transition-transform hover:-translate-y-1 shadow-lg shadow-emerald-600/20" 
-                style={{ background: "#059669" }}
-              >
-                <MessageCircle className="h-5 w-5" />
-                {isBn ? "ফ্রি কনসালটেশন নিন" : "Get Free Consultation"}
-              </button>
-              <a href="#packages-caregiver" className="w-full sm:w-auto">
-                <button className="flex items-center justify-center gap-2.5 px-6 sm:px-8 py-4 rounded-2xl min-h-[56px] font-bold text-slate-700 text-sm w-full transition-all hover:-translate-y-1 border border-slate-200 bg-white/90 backdrop-blur hover:border-emerald-300 hover:text-emerald-700 shadow-sm">
-                  {isBn ? "প্যাকেজ দেখুন" : "Explore Packages"}
-                  <ArrowRight className="h-4 w-4" />
-                </button>
-              </a>
-            </div>
+    </div>
+  </div>
+</div>
 
             {/* Feature Badges - Minimalist */}
             <div className="flex flex-wrap gap-3 sm:gap-4 pt-1 justify-center lg:justify-start mt-10">
