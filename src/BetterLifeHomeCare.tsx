@@ -510,14 +510,12 @@ export default function BetterLifeHomeCarePage() {
         
         {/* ── Premium Faceless Background ── */}
         <div className="absolute inset-0 z-0">
-          {/* এই ছবিটি Unsplash এর একটি ফেসলেস ছবি (হাত ধরে থাকার দৃশ্য) যা খুব ইমোশনাল এবং প্রফেশনাল */}
           <img 
-            src="https://images.unsplash.com/photo-1576765608535-5f04d1e3f289?auto=format&fit=crop&w=1920&q=80" 
-            alt="Compassionate home care" 
+            src="https://images.unsplash.com/photo-1584982751601-97d8cb0f6662?auto=format&fit=crop&w=1920&q=80" 
+            alt="Professional Medical Background" 
             className="w-full h-full object-cover object-center"
           />
-          {/* একটি সফট গ্রেডিয়েন্ট ওভারলে যা টেক্সটকে ক্লিয়ার করবে এবং প্রিমিয়াম লুক দেবে */}
-          <div className="absolute inset-0 bg-gradient-to-r from-white via-white/95 to-white/40" />
+          <div className="absolute inset-0 bg-gradient-to-r from-white via-white/95 to-white/60" />
           <div className="absolute inset-0 soft-grid pointer-events-none opacity-40" />
         </div>
 
@@ -531,7 +529,7 @@ export default function BetterLifeHomeCarePage() {
                 <span className="relative h-2.5 w-2.5 rounded-full bg-emerald-600" />
               </span>
               <span className="text-xs font-bold text-emerald-800 uppercase tracking-wider">
-                {isBn ? "বিশ্বস্ত হোমকেয়ার" : "Trusted HomeCare"}
+                {isBn ? "বিশ্বস্ত হোমকেয়ার সার্ভিস" : "Trusted HomeCare Service"}
               </span>
             </div>
 
