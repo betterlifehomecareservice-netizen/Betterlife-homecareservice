@@ -536,17 +536,19 @@ export default function BetterLifeHomeCarePage() {
         
         {/* ── Premium Faceless Background ── */}
         <div className="absolute inset-0 z-0">
-          <picture>
-            <source media="(max-width: 767px)" srcSet={heroMobileImage} />
-            <img
-              src={heroDesktopImage}
-              alt="BetterLife HomeCare Banner"
-              className="w-full h-full object-cover object-center"
-            />
-          </picture>
-          <div className="absolute inset-0 bg-gradient-to-r from-white via-white/95 to-white/60" />
-          <div className="absolute inset-0 soft-grid pointer-events-none opacity-40" />
-        </div>
+  <picture>
+    <source media="(max-width: 767px)" srcSet={heroMobileImage} />
+    <img
+      src={heroDesktopImage}
+      alt="BetterLife HomeCare Banner"
+      className="w-full h-full object-cover object-[72%_center] md:object-center"
+    />
+  </picture>
+
+  <div className="absolute inset-0 bg-gradient-to-r from-white/78 via-white/52 to-white/12 md:from-white/82 md:via-white/46 md:to-white/10" />
+
+  <div className="absolute inset-0 soft-grid pointer-events-none opacity-22" />
+</div>
 
         <div className="max-w-6xl mx-auto px-4 relative z-10">
           <div className="max-w-2xl text-center mx-auto lg:mx-0 lg:text-left">
