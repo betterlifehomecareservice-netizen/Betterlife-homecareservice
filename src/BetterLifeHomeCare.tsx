@@ -532,15 +532,14 @@ export default function BetterLifeHomeCarePage() {
       </nav>
 
       {/* ── Hero ── */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-slate-50 via-emerald-50/30 to-teal-50/20">
-        {/* Subtle grid texture */}
-        <div className="absolute inset-0 soft-grid opacity-40 pointer-events-none" />
+      <section className="relative overflow-hidden bg-gradient-to-br from-slate-50 via-teal-50/20 to-blue-50/20">
+        <div className="absolute inset-0 soft-grid opacity-30 pointer-events-none" />
 
         <div className="max-w-6xl mx-auto px-4 relative z-10">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-0 min-h-[88vh] lg:min-h-[82vh] items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-0 min-h-[88vh] lg:min-h-[82vh] items-center py-12 lg:py-0">
 
-            {/* ── LEFT: Text Content ── */}
-            <div className="py-14 sm:py-16 lg:py-20 pr-0 lg:pr-10 order-2 lg:order-1">
+            {/* ── LEFT / TOP on mobile: Text ── */}
+            <div className="pr-0 lg:pr-12 order-1">
 
               {/* Live badge */}
               <div className="inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-emerald-50 px-4 py-2 shadow-sm mb-6">
@@ -548,37 +547,49 @@ export default function BetterLifeHomeCarePage() {
                   <span className="absolute inset-0 rounded-full bg-emerald-500 opacity-60 animate-ping" />
                   <span className="relative h-2.5 w-2.5 rounded-full bg-emerald-600" />
                 </span>
-                <span className="text-[12px] font-bold text-emerald-800 uppercase tracking-[0.15em]">
+                <span className="text-[11px] font-bold text-emerald-800 uppercase tracking-[0.15em]">
                   {isBn ? "বিশ্বস্ত হোমকেয়ার সার্ভিস" : "Trusted HomeCare Service"}
                 </span>
               </div>
 
-              {/* Main heading */}
-              <h1 className="text-[2.1rem] sm:text-[2.6rem] lg:text-[3.1rem] font-extrabold tracking-tight text-slate-900 leading-[1.12] mb-5">
+              {/* Main heading — slate + emerald + blue mix */}
+              <h1 className="text-[2rem] sm:text-[2.6rem] lg:text-[3rem] font-extrabold tracking-tight leading-[1.13] mb-5">
                 {isBn ? (
                   <>
-                    নিজের বাড়িতেই
+                    <span className="text-slate-900">নিজের বাড়িতেই</span>
                     <br />
-                    আপনজনদের মাঝে
+                    <span className="text-slate-900">আপনজনদের মাঝে</span>
                     <br />
-                    <span className="text-emerald-600">নিরাপদে সুস্থ</span> হয়ে উঠুন
+                    <span className="text-emerald-600">নিরাপদে সুস্থ</span>
+                    <span className="text-slate-900"> হয়ে উঠুন</span>
                   </>
                 ) : (
                   <>
-                    Recover <span className="text-emerald-600">safely</span>
+                    <span className="text-slate-900">Recover </span>
+                    <span className="text-emerald-600">safely</span>
+                    <span className="text-slate-900"> at home,</span>
                     <br />
-                    at home surrounded
+                    <span className="text-blue-600">surrounded</span>
+                    <span className="text-slate-900"> by the</span>
                     <br />
-                    by the ones you love
+                    <span className="text-slate-900">ones you love</span>
                   </>
                 )}
               </h1>
 
-              {/* Subtitle — clean bg, always 100% readable */}
-              <p className="text-[15px] sm:text-[16.5px] text-slate-600 leading-[1.9] mb-8 max-w-lg font-normal">
-                {isBn
-                  ? "আপনার প্রিয়জনের জন্য হাসপাতাল মানের নার্সিং ও প্রশিক্ষিত কেয়ারগিভার — এখন সরাসরি আপনার বাড়িতে। চিকিৎসার জন্য আর ঘর ছাড়তে হবে না।"
-                  : "Hospital-quality nursing and trained caregiver support — delivered right to your home. No need to leave for treatment anymore."}
+              {/* Subtitle — slate-600 with a blue-tinted first phrase */}
+              <p className="text-[15px] sm:text-[16px] leading-[1.9] mb-8 max-w-lg">
+                {isBn ? (
+                  <>
+                    <span className="text-blue-600 font-semibold">আপনার প্রিয়জনের জন্য হাসপাতাল মানের নার্সিং</span>
+                    <span className="text-slate-600"> ও প্রশিক্ষিত কেয়ারগিভার — এখন সরাসরি আপনার বাড়িতে। চিকিৎসার জন্য আর ঘর ছাড়তে হবে না।</span>
+                  </>
+                ) : (
+                  <>
+                    <span className="text-blue-600 font-semibold">Hospital-quality nursing and trained caregiver support</span>
+                    <span className="text-slate-600"> — delivered right to your home. No need to leave for treatment anymore.</span>
+                  </>
+                )}
               </p>
 
               {/* CTA Buttons */}
@@ -592,7 +603,7 @@ export default function BetterLifeHomeCarePage() {
                 </button>
                 <a
                   href="#packages-caregiver"
-                  className="inline-flex items-center justify-center gap-2 px-7 py-4 rounded-2xl font-bold text-slate-700 text-sm bg-white border border-slate-200 hover:border-emerald-300 hover:text-emerald-700 shadow-sm transition-all hover:scale-[1.02]"
+                  className="inline-flex items-center justify-center gap-2 px-7 py-4 rounded-2xl font-bold text-slate-700 text-sm bg-white border border-slate-200 hover:border-blue-300 hover:text-blue-700 shadow-sm transition-all hover:scale-[1.02]"
                 >
                   {isBn ? "প্যাকেজ দেখুন" : "Explore Packages"}
                   <ArrowRight className="h-4 w-4" />
@@ -600,24 +611,24 @@ export default function BetterLifeHomeCarePage() {
               </div>
 
               {/* Trust badges */}
-              <div className="flex flex-wrap gap-2.5">
+              <div className="flex flex-wrap gap-2.5 mb-7">
                 {[
-                  { icon: Shield, label: isBn ? "ভেরিফাইড স্টাফ" : "Verified Staff", color: "#059669" },
-                  { icon: Clock,  label: isBn ? "২৪/৭ সার্ভিস" : "24/7 Service",    color: "#2563eb" },
-                  { icon: BadgeCheck, label: isBn ? "ব্যাকগ্রাউন্ড চেকড" : "Background Checked", color: "#7c3aed" },
+                  { icon: Shield,    label: isBn ? "ভেরিফাইড স্টাফ" : "Verified Staff",       color: "#059669" },
+                  { icon: Clock,     label: isBn ? "২৪/৭ সার্ভিস" : "24/7 Service",            color: "#2563eb" },
+                  { icon: BadgeCheck,label: isBn ? "ব্যাকগ্রাউন্ড চেকড" : "Background Checked", color: "#7c3aed" },
                 ].map(({ icon: Icon, label, color }) => (
                   <div
                     key={label}
                     className="inline-flex items-center gap-2 px-4 py-2.5 rounded-2xl bg-white border border-slate-200 shadow-sm text-sm font-semibold text-slate-700"
                   >
-                    <Icon className="h-3.5 w-3.5" style={{ color }} />
+                    <Icon className="h-3.5 w-3.5 flex-shrink-0" style={{ color }} />
                     {label}
                   </div>
                 ))}
               </div>
 
-              {/* Social proof mini row */}
-              <div className="flex items-center gap-3 mt-7">
+              {/* Social proof */}
+              <div className="flex items-center gap-3">
                 <div className="flex -space-x-2">
                   {["#10b981","#3b82f6","#8b5cf6","#f59e0b"].map((c, i) => (
                     <div key={i} className="h-8 w-8 rounded-full border-2 border-white flex items-center justify-center text-white text-xs font-bold" style={{ background: c }}>
@@ -636,16 +647,16 @@ export default function BetterLifeHomeCarePage() {
               </div>
             </div>
 
-            {/* ── RIGHT: Image ── */}
-            <div className="relative order-1 lg:order-2 flex items-center justify-center lg:justify-end py-8 lg:py-0">
-              {/* Decorative blob behind image */}
-              <div className="absolute right-0 top-1/2 -translate-y-1/2 w-[420px] h-[420px] rounded-full opacity-20 blur-3xl pointer-events-none"
-                style={{ background: "radial-gradient(circle, #10b981 0%, #3b82f6 60%, transparent 100%)" }} />
+            {/* ── RIGHT / BOTTOM on mobile: Image ── */}
+            <div className="relative order-2 flex items-center justify-center lg:justify-end">
+              {/* Glow blob */}
+              <div className="absolute inset-0 rounded-full opacity-20 blur-3xl pointer-events-none"
+                style={{ background: "radial-gradient(circle at 60% 50%, #10b981 0%, #3b82f6 55%, transparent 100%)" }} />
 
-              {/* Image container */}
-              <div className="relative w-full max-w-[480px] lg:max-w-none">
-                {/* Floating card — top left */}
-                <div className="absolute -left-4 top-10 z-20 hidden sm:flex items-center gap-2.5 bg-white rounded-2xl px-4 py-3 shadow-[0_8px_24px_rgba(15,23,42,0.12)] border border-slate-100 animate-[float_3s_ease-in-out_infinite]">
+              <div className="relative w-full max-w-[440px] lg:max-w-none">
+                {/* Floating card top-left — hidden on mobile */}
+                <div className="absolute -left-4 top-8 z-20 hidden sm:flex items-center gap-2.5 bg-white rounded-2xl px-4 py-3 shadow-[0_8px_24px_rgba(15,23,42,0.12)] border border-slate-100"
+                  style={{ animation: "float 3s ease-in-out infinite" }}>
                   <div className="h-9 w-9 rounded-xl bg-emerald-100 flex items-center justify-center flex-shrink-0">
                     <HeartPulse className="h-5 w-5 text-emerald-600" />
                   </div>
@@ -655,8 +666,9 @@ export default function BetterLifeHomeCarePage() {
                   </div>
                 </div>
 
-                {/* Floating card — bottom right */}
-                <div className="absolute -right-4 bottom-10 z-20 hidden sm:flex items-center gap-2.5 bg-white rounded-2xl px-4 py-3 shadow-[0_8px_24px_rgba(15,23,42,0.12)] border border-slate-100 animate-[float_3s_ease-in-out_0.8s_infinite]">
+                {/* Floating card bottom-right — hidden on mobile */}
+                <div className="absolute -right-4 bottom-8 z-20 hidden sm:flex items-center gap-2.5 bg-white rounded-2xl px-4 py-3 shadow-[0_8px_24px_rgba(15,23,42,0.12)] border border-slate-100"
+                  style={{ animation: "float 3s ease-in-out 0.8s infinite" }}>
                   <div className="h-9 w-9 rounded-xl bg-blue-100 flex items-center justify-center flex-shrink-0">
                     <BadgeCheck className="h-5 w-5 text-blue-600" />
                   </div>
@@ -667,14 +679,13 @@ export default function BetterLifeHomeCarePage() {
                 </div>
 
                 {/* Main image */}
-                <div className="relative rounded-[28px] overflow-hidden shadow-[0_24px_64px_rgba(15,23,42,0.18)] border-4 border-white">
+                <div className="relative rounded-[28px] overflow-hidden shadow-[0_24px_64px_rgba(15,23,42,0.15)] border-4 border-white">
                   <img
                     src={heroDesktopImage}
                     alt="BetterLife HomeCare"
-                    className="w-full h-[420px] sm:h-[500px] lg:h-[560px] object-cover object-center"
+                    className="w-full h-[340px] sm:h-[440px] lg:h-[520px] object-cover object-center"
                   />
-                  {/* Subtle bottom fade */}
-                  <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-black/20 to-transparent" />
+                  <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-black/15 to-transparent" />
                 </div>
               </div>
             </div>
