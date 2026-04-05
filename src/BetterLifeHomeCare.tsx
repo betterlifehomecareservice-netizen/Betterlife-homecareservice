@@ -173,7 +173,7 @@ function ConsultationModal({
   );
 }
 
-/* ── Product Order Modal (improved from new version) ─ */
+/* ── Product Order Modal ── */
 function OrderModal({
   open, onClose, isBn, product,
 }: {
@@ -295,7 +295,7 @@ const NURSE_PKGS = [
 const NANNY_PKGS = [
   { id: "nn8", nameEn: "Nanny 8 Hours", nameBn: "নানি ৮ ঘণ্টা", hoursEn: "8 hrs/day", hoursBn: "দিনে ৮ ঘণ্টা", priceEn: "৳15,000", priceBn: "৳১৫,০০০", perBn: "/মাস", perEn: "/month", color: "#f59e0b",
     featuresEn: ["Personal care & feeding","Hygiene maintenance","Educational activities","Tidying children's space","Parent collaboration"],
-    featuresBn: ["ব্যক্তিগত যত্ন ও খাওয়ানো","পরিচ্ছন্নতা রক্ষা","শিক্ষামূলক কার্যকলাপ","শিশুর ঘর গোছানো","অভিভাবক সমন্বয়"] },
+    featuresBn: ["ব্যক্তিগত যত্ন ও খাওয়ানো","পরিচ্ছন্নতা রক্ষা","শিক্ষামূলক কার্যকলাপ","শিশুর ঘর গোছানো","অভিভাগক সমন্বয়"] },
   { id: "nn12", nameEn: "Nanny 12 Hours", nameBn: "নানি ১২ ঘণ্টা", hoursEn: "12 hrs/day", hoursBn: "দিনে ১২ ঘণ্টা", priceEn: "৳20,000", priceBn: "৳২০,০০০", perBn: "/মাস", perEn: "/month", color: "#ec4899", featured: true,
     featuresEn: ["All 8-hour services","New mom support","Early childhood development","Emotional support","Weekly progress report"],
     featuresBn: ["৮ ঘণ্টার সব সেবা","নতুন মায়ের সহায়তা","প্রাথমিক শিশু বিকাশ","মানসিক সহায়তা","সাপ্তাহিক বিকাশ রিপোর্ট"] },
@@ -355,12 +355,12 @@ const FAQS = [
     aEn: "Yes — daily, weekly, and monthly packages all available." },
 ];
 
-/* ── Package Card ────────────────────────────────── */
-function PkgCard({ pkg, isBn, onOrder }: { pkg: typeof CAREGIVER_PKGS[0] & { featured?: boolean }; isBn: boolean; onOrder: (s: string) => void }) {
+/* ── Package Card ── */
+function PkgCard({ pkg, isBn, onOrder }: { pkg: any; isBn: boolean; onOrder: (s: string) => void }) {
   return (
-    <div className={`relative flex flex-col h-full rounded-2xl p-5 transition-all hover:-translate-y-1 ${(pkg as any).featured ? "border-2 shadow-lg" : "border border-slate-200 bg-white shadow-sm"}`}
-      style={(pkg as any).featured ? { borderColor: pkg.color, background: `linear-gradient(145deg,white,${pkg.color}08)`, boxShadow: `0 20px 60px ${pkg.color}20` } : {}}>
-      {(pkg as any).featured && (
+    <div className={`relative flex flex-col h-full rounded-2xl p-5 transition-all hover:-translate-y-1 ${pkg.featured ? "border-2 shadow-lg" : "border border-slate-200 bg-white shadow-sm"}`}
+      style={pkg.featured ? { borderColor: pkg.color, background: `linear-gradient(145deg,white,${pkg.color}08)`, boxShadow: `0 20px 60px ${pkg.color}20` } : {}}>
+      {pkg.featured && (
         <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 whitespace-nowrap">
           <span className="flex items-center gap-1 rounded-full px-3 py-1 text-[11px] font-bold text-white" style={{ background: `linear-gradient(135deg,${pkg.color},${pkg.color}cc)` }}>
             <Star className="h-2.5 w-2.5 fill-white" /> {isBn ? "সবচেয়ে জনপ্রিয়" : "Most Popular"}
@@ -380,7 +380,7 @@ function PkgCard({ pkg, isBn, onOrder }: { pkg: typeof CAREGIVER_PKGS[0] & { fea
       </div>
       <div className="h-px bg-slate-100 mb-3" />
       <ul className="flex flex-col gap-2 flex-1 mb-4">
-        {(isBn ? pkg.featuresBn : pkg.featuresEn).map(f => (
+        {(isBn ? pkg.featuresBn : pkg.featuresEn).map((f: string) => (
           <li key={f} className="flex items-start gap-2 text-sm text-slate-700">
             <BadgeCheck className="h-4 w-4 flex-shrink-0 mt-0.5" style={{ color: pkg.color }} />{f}
           </li>
@@ -388,7 +388,7 @@ function PkgCard({ pkg, isBn, onOrder }: { pkg: typeof CAREGIVER_PKGS[0] & { fea
       </ul>
       <button onClick={() => onOrder(isBn ? pkg.nameBn : pkg.nameEn)}
         className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl font-bold text-sm transition hover:opacity-90"
-        style={(pkg as any).featured
+        style={pkg.featured
           ? { background: `linear-gradient(135deg,${pkg.color},${pkg.color}cc)`, color: "white" }
           : { background: `${pkg.color}10`, border: `1px solid ${pkg.color}28`, color: pkg.color }}>
         <MessageCircle className="h-4 w-4" />
@@ -398,7 +398,7 @@ function PkgCard({ pkg, isBn, onOrder }: { pkg: typeof CAREGIVER_PKGS[0] & { fea
   );
 }
 
-/* ── Main Page ───────────────────────────────────── */
+/* ── Main Page ── */
 export default function BetterLifeHomeCarePage() {
   const [isBn, setIsBn] = useState(true);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -407,7 +407,6 @@ export default function BetterLifeHomeCarePage() {
   const [orderModal, setOrderModal] = useState<{ open: boolean; product?: { id?: string; name: string; price: string } }>({ open: false });
   const [productSearch, setProductSearch] = useState("");
 
-  // Supabase products
   const [products, setProducts] = useState<SiteProduct[]>([]);
   const [loadingProducts, setLoadingProducts] = useState(true);
 
@@ -471,7 +470,7 @@ export default function BetterLifeHomeCarePage() {
       <OrderModal open={orderModal.open} onClose={() => setOrderModal({ open: false })} product={orderModal.product} isBn={isBn} />
 
       {/* ── Navbar ── */}
-      <nav className="sticky top-0 z-50 border-b border-slate-200/80 bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/90 shadow-[0_8px_28px_rgba(15,23,42,0.04)]">
+      <nav className="sticky top-0 z-50 border-b border-slate-200/80 bg-white/95 backdrop-blur shadow-[0_8px_28px_rgba(15,23,42,0.04)]">
         <div className="max-w-6xl mx-auto px-4 h-[72px] flex items-center justify-between gap-3">
           <a href="#top" className="flex items-center gap-2.5 min-w-0">
             <BetterLogo size={40} />
@@ -484,7 +483,7 @@ export default function BetterLifeHomeCarePage() {
             {navLinks.map(l => <a key={l.href} href={l.href} className="hover:text-emerald-700 transition-colors">{isBn ? l.bn : l.en}</a>)}
           </div>
           <div className="flex items-center gap-2">
-            <button onClick={() => setIsBn(!isBn)} className="rounded-full border border-slate-200 bg-white px-3.5 py-2 text-xs font-bold text-slate-700 hover:border-emerald-300 hover:text-emerald-700 transition-colors">
+            <button onClick={() => setIsBn(!isBn)} className="rounded-full border border-slate-200 bg-white px-3.5 py-2 text-xs font-bold text-slate-700 hover:border-emerald-300 transition-colors">
               {isBn ? "English" : "বাংলা"}
             </button>
             <button onClick={() => setConsultModal({ open: true, prefill: "" })} className="hidden md:flex items-center gap-1.5 rounded-full px-4 py-2.5 text-xs font-bold text-white shadow-sm hover:opacity-90 transition" style={{ background: "linear-gradient(135deg,#0f9f81,#2563eb)" }}>
@@ -497,7 +496,7 @@ export default function BetterLifeHomeCarePage() {
         </div>
         {menuOpen && (
           <div className="md:hidden border-t border-slate-200 px-4 py-3 flex flex-col gap-1 bg-white">
-            {navLinks.map(l => <a key={l.href} href={l.href} onClick={() => setMenuOpen(false)} className="py-3 px-2 text-sm font-semibold text-slate-700 hover:text-emerald-700 border-b border-slate-100 last:border-0">{isBn ? l.bn : l.en}</a>)}
+            {navLinks.map(l => <a key={l.href} href={l.href} onClick={() => setMenuOpen(false)} className="py-3 px-2 text-sm font-semibold text-slate-700 border-b border-slate-100 last:border-0">{isBn ? l.bn : l.en}</a>)}
             <button onClick={() => { setConsultModal({ open: true, prefill: "" }); setMenuOpen(false); }} className="mt-2 w-full flex items-center justify-center gap-2 py-3 rounded-2xl font-bold text-white text-sm" style={{ background: "linear-gradient(135deg,#0f9f81,#2563eb)" }}>
               <Phone className="h-4 w-4" />{isBn ? "যোগাযোগ করুন" : "Contact Now"}
             </button>
@@ -505,14 +504,17 @@ export default function BetterLifeHomeCarePage() {
         )}
       </nav>
 
-      {/* ── Hero ── */}
+      {/* ── Hero Section ── */}
       <section className="relative overflow-hidden py-16 sm:py-20 lg:py-24">
         <div className="hero-medical-bg" />
         <div className="absolute inset-0 soft-grid pointer-events-none" />
         <div className="max-w-6xl mx-auto px-4 relative z-10">
           <div className="max-w-3xl text-center mx-auto lg:mx-0 lg:text-left">
             <div className="inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-white/92 px-4 py-2 shadow-sm mb-6">
-              <span className="relative flex h-2 w-2"><span className="absolute inset-0 rounded-full bg-emerald-500 opacity-70" style={{ animation: "pulse-ring 1.8s ease-out infinite" }} /><span className="relative h-2 w-2 rounded-full bg-emerald-500" /></span>
+              <span className="relative flex h-2 w-2">
+                <span className="absolute inset-0 rounded-full bg-emerald-500 opacity-70" style={{ animation: "pulse-ring 1.8s ease-out infinite" }} />
+                <span className="relative h-2 w-2 rounded-full bg-emerald-500" />
+              </span>
               <span className="text-[11px] font-bold text-emerald-700 uppercase tracking-widest">{isBn ? "বিশ্বস্ত হোমকেয়ার — বাংলাদেশ" : "Trusted HomeCare — Bangladesh"}</span>
             </div>
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-slate-950 leading-[1.05] mb-5">
@@ -527,31 +529,18 @@ export default function BetterLifeHomeCarePage() {
               <button onClick={() => setConsultModal({ open: true, prefill: "" })} className="flex items-center justify-center gap-2 px-7 py-3.5 rounded-2xl font-bold text-white text-sm w-full sm:w-auto transition-all hover:scale-[1.02]" style={{ background: "linear-gradient(135deg,#0f9f81,#2563eb)", boxShadow: "0 14px 32px rgba(37,99,235,.18)" }}>
                 <MessageCircle className="h-4 w-4" />{isBn ? "ফ্রি কনসালটেশন নিন" : "Get Free Consultation"}<ArrowRight className="h-4 w-4" />
               </button>
-              <a href="#packages-caregiver"><button className="flex items-center justify-center gap-2 px-7 py-3.5 rounded-2xl font-bold text-slate-700 text-sm w-full sm:w-auto transition-all hover:scale-[1.02] border border-slate-200 bg-white shadow-sm">{isBn ? "প্যাকেজ দেখুন" : "Explore Packages"}</button></a>
+              <a href="#packages-caregiver"><button className="flex items-center justify-center gap-2 px-7 py-3.5 rounded-2xl font-bold text-slate-700 text-sm w-full sm:w-auto border border-slate-200 bg-white shadow-sm transition-all hover:scale-[1.02]">{isBn ? "প্যাকেজ দেখুন" : "Explore Packages"}</button></a>
             </div>
-            <div className="flex flex-wrap gap-2 justify-center lg:justify-start mt-6">
-              {[{ icon: BadgeCheck, label: isBn ? "ভেরিফায়েড কেয়ারগিভার" : "Verified Caregiver", color: "#2563eb" }, { icon: Clock, label: isBn ? "২৪/৭ সার্ভিস" : "24/7 Service", color: "#059669" }, { icon: Shield, label: isBn ? "ব্যাকগ্রাউন্ড চেকড" : "Background Checked", color: "#7c3aed" }, { icon: Zap, label: isBn ? "২৪ ঘণ্টায় রিপ্লেসমেন্ট" : "24hr Replacement", color: "#059669" }]
-                .map(({ icon: Icon, label, color }) => (
-                  <div key={label} className="flex items-center gap-1.5 rounded-full border border-white bg-white/88 px-3 py-1.5 shadow-sm">
-                    <Icon className="h-3 w-3" style={{ color }} /><span className="text-[11px] font-semibold text-slate-700">{label}</span>
-                  </div>
-                ))}
-            </div>
-          </div>
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-10 max-w-3xl mx-auto lg:mx-0">
-            {[{ val: "৫০০+", label: isBn ? "রোগী সেবা" : "Patients Served", color: "#3b82f6" }, { val: "৫০+", label: isBn ? "Verified Caregiver" : "Verified Caregivers", color: "#8b5cf6" }, { val: "২৪/৭", label: isBn ? "সার্ভিস" : "Service Hours", color: "#ec4899" }, { val: "১০০%", label: isBn ? "Satisfaction গ্যারান্টি" : "Satisfaction Rate", color: "#f59e0b" }]
-              .map(s => <div key={s.label} className="rounded-2xl border border-slate-200/80 bg-white/90 px-3 py-4 text-center shadow-sm"><div className="text-2xl font-extrabold" style={{ color: s.color }}>{s.val}</div><div className="text-xs text-xs text-slate-500 font-medium mt-1">{s.label}</div></div>)}
           </div>
         </div>
       </section>
 
-      {/* ── Services ── */}
+      {/* Services Section */}
       <section id="services" className="py-16 bg-slate-50">
         <div className="max-w-6xl mx-auto px-4">
           <Reveal className="text-center mb-12">
             <div className="inline-flex items-center gap-2 rounded-full border border-green-100 bg-green-50 px-4 py-1.5 mb-4"><span className="h-1.5 w-1.5 rounded-full bg-green-500" /><span className="text-xs font-bold uppercase tracking-widest text-green-700">{isBn ? "আমাদের সেবাসমূহ" : "Our Services"}</span></div>
             <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900">{isBn ? "আমরা যে সেবা প্রদান করি" : "Services We Provide"}</h2>
-            <p className="mt-3 max-w-xl mx-auto text-sm text-slate-500">{isBn ? "বাড়িতে বসেই পান hospital-quality সেবা।" : "Hospital-quality care at your home."}</p>
           </Reveal>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {SERVICES.map((s, i) => {
@@ -575,38 +564,8 @@ export default function BetterLifeHomeCarePage() {
         </div>
       </section>
 
-      {/* ── Why Us ── */}
-      <section id="why-us" className="py-16 bg-white">
-        <div className="max-w-6xl mx-auto px-4">
-          <Reveal className="text-center mb-12">
-            <div className="inline-flex items-center gap-2 rounded-full border border-blue-100 bg-blue-50 px-4 py-1.5 mb-4"><span className="h-1.5 w-1.5 rounded-full bg-blue-500" /><span className="text-xs font-bold uppercase tracking-widest text-blue-700">{isBn ? "কেন আমাদের বেছে নেবেন" : "Why Choose Us"}</span></div>
-            <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900">{isBn ? "আমরা কিভাবে Caregiver বাছাই করি?" : "How Do We Choose Our Providers?"}</h2>
-            <p className="mt-3 max-w-xl mx-auto text-sm text-slate-500">{isBn ? "প্রতিটি caregiver ৬টি কঠোর ধাপ পার করে আপনার বাড়িতে আসে।" : "Every caregiver passes 6 rigorous stages before coming to your home."}</p>
-          </Reveal>
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 mb-10">
-            {WHY_STEPS.map((s, i) => {
-              const Icon = s.icon;
-              return (
-                <Reveal key={s.titleEn} delay={i * 0.08}>
-                  <div className="text-center p-4 rounded-2xl border border-slate-100 bg-slate-50 card-hover">
-                    <div className="h-14 w-14 rounded-full flex items-center justify-center mx-auto mb-3" style={{ background: `${s.color}15`, border: `2px solid ${s.color}30` }}>
-                      <Icon className="h-7 w-7" style={{ color: s.color }} />
-                    </div>
-                    <div className="text-xs font-bold text-slate-700">{isBn ? s.titleBn : s.titleEn}</div>
-                  </div>
-                </Reveal>
-              );
-            })}
-          </div>
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-            {[{ val: "৩ মাস+", lBn: "Training সময়কাল", lEn: "Training Duration", color: "#3b82f6" }, { val: "০ টাকা", lBn: "Hidden Charge নেই", lEn: "No Hidden Charges", color: "#10b981" }, { val: "২৪ ঘণ্টা", lBn: "Replacement গ্যারান্টি", lEn: "Replacement Guarantee", color: "#8b5cf6" }, { val: "১০০%", lBn: "Satisfaction গ্যারান্টি", lEn: "Satisfaction Guarantee", color: "#ec4899" }]
-              .map(s => <Reveal key={s.lEn}><div className="rounded-2xl border border-slate-100 bg-white p-4 text-center shadow-sm card-hover"><div className="text-2xl font-extrabold mb-1" style={{ color: s.color }}>{s.val}</div><div className="text-[11px] text-slate-400 font-medium">{isBn ? s.lBn : s.lEn}</div></div></Reveal>)}
-          </div>
-        </div>
-      </section>
-
-      {/* ── Packages ── */}
-      <section id="packages-caregiver" className="py-16 bg-slate-50">
+      {/* Packages Section */}
+      <section id="packages-caregiver" className="py-16 bg-white">
         <div className="max-w-6xl mx-auto px-4">
           <Reveal className="text-center mb-8">
             <div className="inline-flex items-center gap-2 rounded-full border border-blue-100 bg-blue-50 px-4 py-1.5 mb-3"><Users className="h-3.5 w-3.5 text-blue-500" /><span className="text-xs font-bold uppercase tracking-widest text-blue-700">{isBn ? "কেয়ারগিভার প্যাকেজ" : "Caregiver Packages"}</span></div>
@@ -615,219 +574,32 @@ export default function BetterLifeHomeCarePage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-14">
             {CAREGIVER_PKGS.map((p, i) => <Reveal key={p.id} delay={i * 0.1}><PkgCard pkg={p} isBn={isBn} onOrder={s => setConsultModal({ open: true, prefill: s })} /></Reveal>)}
           </div>
-
-          <div id="packages-nurse" className="scroll-mt-20" />
-          <Reveal className="text-center mb-8">
-            <div className="inline-flex items-center gap-2 rounded-full border border-emerald-100 bg-emerald-50 px-4 py-1.5 mb-3"><HeartPulse className="h-3.5 w-3.5 text-emerald-500" /><span className="text-xs font-bold uppercase tracking-widest text-emerald-700">{isBn ? "নার্সিং প্যাকেজ" : "Nursing Packages"}</span></div>
-            <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900">{isBn ? "Medical সেবার জন্য Certified Nurse" : "Certified Nurse For Medical Care"}</h2>
-          </Reveal>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-14">
-            {NURSE_PKGS.map((p, i) => <Reveal key={p.id} delay={i * 0.1}><PkgCard pkg={p} isBn={isBn} onOrder={s => setConsultModal({ open: true, prefill: s })} /></Reveal>)}
-          </div>
-
-          <div id="packages-nanny" className="scroll-mt-20" />
-          <Reveal className="text-center mb-8">
-            <div className="inline-flex items-center gap-2 rounded-full border border-amber-100 bg-amber-50 px-4 py-1.5 mb-3"><Home className="h-3.5 w-3.5 text-amber-500" /><span className="text-xs font-bold uppercase tracking-widest text-amber-700">{isBn ? "নানি / শিশু যত্ন প্যাকেজ" : "Nanny / Baby Care Packages"}</span></div>
-            <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900">{isBn ? "শিশু ও নবজাতকের জন্য Trained Nanny" : "Trained Nanny For Baby & Newborn Care"}</h2>
-          </Reveal>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-6">
-            {NANNY_PKGS.map((p, i) => <Reveal key={p.id} delay={i * 0.1}><PkgCard pkg={p} isBn={isBn} onOrder={s => setConsultModal({ open: true, prefill: s })} /></Reveal>)}
-          </div>
-          <Reveal className="text-center mt-4">
-            <p className="text-xs text-slate-400 mb-2">{isBn ? "* সব caregiver মাসে ২ দিন ছুটি পাবেন। Meal ও accommodation client-এর দায়িত্বে।" : "* All caregivers entitled to 2 days off/month. Meals & accommodation are client's responsibility."}</p>
-            <p className="text-sm text-slate-500">{isBn ? "Custom package এর জন্য " : "For custom packages "}<button onClick={() => setConsultModal({ open: true, prefill: "Custom Package" })} className="text-green-600 font-bold hover:underline">{isBn ? "এখানে ক্লিক করুন →" : "click here →"}</button></p>
-          </Reveal>
         </div>
       </section>
 
-      {/* ── Products (Supabase) ── */}
-      <section id="products" className="py-16 bg-white">
-        <div className="max-w-6xl mx-auto px-4">
-          <Reveal className="text-center mb-10">
-            <div className="inline-flex items-center gap-2 rounded-full border border-green-100 bg-green-50 px-4 py-1.5 mb-4"><ShoppingCart className="h-3.5 w-3.5 text-green-600" /><span className="text-xs font-bold uppercase tracking-widest text-green-700">{isBn ? "মেডিকেল পণ্য" : "Medical Products"}</span></div>
-            <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900">{isBn ? "মেডিকেল সরঞ্জাম ভাড়া ও বিক্রয়" : "Medical Equipment Rent & Sale"}</h2>
-            <p className="mt-3 max-w-xl mx-auto text-sm text-slate-500">{isBn ? "সব ধরনের medical equipment পাওয়া যায়। Home delivery সুবিধা।" : "All types of medical equipment available with home delivery."}</p>
-            <div className="mx-auto mt-5 max-w-sm relative">
-              <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
-              <input type="text" placeholder={isBn ? "পণ্য খুঁজুন..." : "Search products..."} value={productSearch} onChange={e => setProductSearch(e.target.value)}
-                className="w-full rounded-2xl border border-slate-200 bg-white py-3 pl-10 pr-4 text-sm outline-none focus:border-green-400 focus:ring-2 focus:ring-green-100 shadow-sm" />
-            </div>
-          </Reveal>
-
-          {loadingProducts ? (
-            <div className="text-center py-10 text-slate-400">
-              <p>{isBn ? "পণ্য লোড হচ্ছে..." : "Loading products..."}</p>
-            </div>
-          ) : (
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
-              {filteredProducts.map((p, i) => (
-                <Reveal key={p.id} delay={i * 0.04}>
-                  <div className="card-hover rounded-2xl border border-slate-200 bg-white p-4 shadow-sm flex flex-col h-full overflow-hidden">
-                    <div className="h-36 rounded-xl overflow-hidden mb-3 border border-slate-100 bg-slate-50">
-                      <img
-                        src={p.image_url || FALLBACK_PRODUCT_IMAGE}
-                        alt={p.name}
-                        loading="lazy"
-                        className="h-full w-full object-cover"
-                        onError={(e) => { e.currentTarget.src = FALLBACK_PRODUCT_IMAGE; }}
-                      />
-                    </div>
-                    <h3 className="font-bold text-sm text-slate-900 mb-1 leading-tight min-h-[40px]">
-                      {p.name}
-                    </h3>
-                    <p className="text-[11px] text-slate-400 leading-relaxed flex-1 mb-3">
-                      {p.description || (isBn ? "কোনো বিবরণ নেই" : "No description")}
-                    </p>
-                    <div className="font-extrabold text-base mb-3 text-emerald-600">
-                      {formatPrice(p.price, isBn)}
-                    </div>
-                    <button
-                      onClick={() => setOrderModal({
-                        open: true,
-                        product: { id: p.id, name: p.name, price: p.price || "0" },
-                      })}
-                      className="w-full py-2 rounded-xl font-bold text-white text-xs transition hover:opacity-90 flex items-center justify-center gap-1.5"
-                      style={{ background: "linear-gradient(135deg,#10b981,#8b5cf6)" }}
-                    >
-                      <ShoppingCart className="h-3.5 w-3.5" />
-                      {isBn ? "অর্ডার করুন" : "Order Now"}
-                    </button>
-                  </div>
-                </Reveal>
-              ))}
-            </div>
-          )}
-
-          {!loadingProducts && filteredProducts.length === 0 && (
-            <div className="text-center py-10 text-slate-400">
-              <p>{isBn ? "কোনো পণ্য পাওয়া যায়নি" : "No products found"}</p>
-              <button onClick={() => setProductSearch("")} className="mt-2 text-sm text-green-500 hover:underline">{isBn ? "সব দেখুন" : "Show all"}</button>
-            </div>
-          )}
-        </div>
-      </section>
-
-      {/* ── Reviews ── */}
-      <section id="reviews" className="py-16 bg-slate-50">
-        <div className="max-w-6xl mx-auto px-4">
-          <Reveal className="text-center mb-12">
-            <div className="inline-flex items-center gap-2 rounded-full border border-amber-100 bg-amber-50 px-4 py-1.5 mb-4"><Star className="h-3.5 w-3.5 text-amber-500 fill-amber-500" /><span className="text-xs font-bold uppercase tracking-widest text-amber-700">{isBn ? "ক্লায়েন্ট রিভিউ" : "Client Reviews"}</span></div>
-            <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900">{isBn ? "আমাদের ক্লায়েন্টরা কী বলেন" : "What Our Clients Say About Us"}</h2>
-          </Reveal>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-            {REVIEWS.map((r, i) => (
-              <Reveal key={r.initial} delay={i * 0.1}>
-                <div className="rounded-2xl border border-slate-100 bg-white p-6 h-full card-hover">
-                  <div className="flex gap-1 mb-4">{Array.from({ length: 5 }).map((_, idx) => <Star key={idx} className="h-4 w-4 fill-amber-400 text-amber-400" />)}</div>
-                  <p className="text-base text-slate-700 leading-relaxed mb-5">"{isBn ? r.bodyBn : r.bodyEn}"</p>
-                  <div className="flex items-center gap-3 pt-4 border-t border-slate-200">
-                    <div className="h-11 w-11 rounded-full flex items-center justify-center font-extrabold text-lg text-white flex-shrink-0" style={{ background: `linear-gradient(135deg,${r.color},${r.color}99)` }}>{r.initial}</div>
-                    <div><div className="font-bold text-sm text-slate-900">{r.nameEn}</div><div className="text-xs text-slate-400">{isBn ? r.roleBn : r.roleEn}</div></div>
-                  </div>
-                </div>
-              </Reveal>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── FAQ ── */}
-      <section className="py-16 bg-white">
-        <div className="max-w-2xl mx-auto px-4">
-          <Reveal className="text-center mb-10">
-            <div className="inline-flex items-center gap-2 rounded-full border border-green-100 bg-green-50 px-4 py-1.5 mb-4"><span className="h-1.5 w-1.5 rounded-full bg-green-500" /><span className="text-xs font-bold uppercase tracking-widest text-green-700">FAQ</span></div>
-            <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900">{isBn ? "সাধারণ প্রশ্নাবলী" : "Frequently Asked Questions"}</h2>
-          </Reveal>
-          <div className="flex flex-col gap-3">
-            {FAQS.map((f, i) => (
-              <Reveal key={i} delay={i * 0.05}>
-                <div className="rounded-2xl overflow-hidden border transition-all" style={{ background: openFaq === i ? "#f0fdf4" : "white", borderColor: openFaq === i ? "#bbf7d0" : "#e2e8f0" }}>
-                  <button className="w-full flex items-center justify-between gap-4 px-5 py-4 text-left" onClick={() => setOpenFaq(openFaq === i ? null : i)}>
-                    <span className="font-semibold text-sm text-slate-900">{isBn ? f.qBn : f.qEn}</span>
-                    <ChevronDown className="h-4 w-4 flex-shrink-0 text-slate-400 transition-transform duration-200" style={{ transform: openFaq === i ? "rotate(180deg)" : "rotate(0deg)" }} />
-                  </button>
-                  <div style={{ maxHeight: openFaq === i ? "300px" : "0", overflow: "hidden", transition: "max-height .3s ease" }}>
-                    <div className="px-5 pb-5"><p className="text-sm leading-relaxed text-slate-600">{isBn ? f.aBn : f.aEn}</p></div>
-                  </div>
-                </div>
-              </Reveal>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── Contact ── */}
-      <section id="contact" className="py-16 bg-slate-50">
-        <div className="max-w-6xl mx-auto px-4">
-          <Reveal className="text-center mb-10">
-            <div className="inline-flex items-center gap-2 rounded-full border border-blue-100 bg-blue-50 px-4 py-1.5 mb-4"><MapPin className="h-3.5 w-3.5 text-blue-500" /><span className="text-xs font-bold uppercase tracking-widest text-blue-700">{isBn ? "আমাদের অফিস ও লোকেশন" : "Office & Location"}</span></div>
-            <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900">{isBn ? "যোগাযোগ করুন" : "Get In Touch"}</h2>
-            <p className="mt-3 text-sm sm:text-base text-slate-600 max-w-2xl mx-auto">{isBn ? "গাজীপুর থেকে পরিবারগুলোর জন্য আমরা বিশ্বস্ত কেয়ারগিভার, নার্সিং কেয়ার ও হোম সাপোর্ট সেবা প্রদান করি। ফোন, WhatsApp বা ম্যাপের মাধ্যমে সহজেই আমাদের সাথে যুক্ত হতে পারেন।" : "From Gazipur, we provide dependable caregiver, nursing, and home support services for families who need trusted care. Reach us by phone, WhatsApp, or map."}</p>
-          </Reveal>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-stretch">
-            <Reveal>
-              <div className="rounded-[28px] border border-slate-200 bg-white p-6 sm:p-7 shadow-sm h-full">
-                <h3 className="font-bold text-slate-900 mb-2">{isBn ? "আমাদের তথ্য" : "Contact Information"}</h3>
-                <p className="text-sm text-slate-500 leading-relaxed mb-5">{isBn ? "দ্রুত রেসপন্স, পরিষ্কার লোকেশন ও সহজ যোগাযোগ—সবকিছু এক জায়গায়।" : "Everything you need to contact us quickly, clearly, and confidently."}</p>
-                <div className="flex flex-col gap-4 mb-6">
-                  {[{ icon: MapPin, title: isBn ? "ঠিকানা" : "Address", text: "Bagdad Tanzia Tower, Cawrasta, Gazipur, Dhaka", color: "#2563eb" }, { icon: Clock, title: isBn ? "অফিস সময়" : "Working Hours", text: isBn ? "শনিবার – বৃহস্পতিবার: সকাল ৮টা – রাত ৮টা" : "Saturday to Thursday: 8am – 8pm", color: "#059669" }, { icon: Phone, title: isBn ? "মোবাইল" : "Phone", text: "+880 1618-699125", color: "#7c3aed" }]
-                    .map(({ icon: Icon, title, text, color }) => <div key={title} className="flex items-start gap-3 rounded-2xl border border-slate-100 bg-slate-50 p-3.5"><div className="h-10 w-10 rounded-2xl flex items-center justify-center flex-shrink-0" style={{ background: `${color}12` }}><Icon className="h-4 w-4" style={{ color }} /></div><div><div className="text-xs font-bold uppercase tracking-wide text-slate-400">{title}</div><span className="text-sm text-slate-700 leading-relaxed">{text}</span></div></div>)}
-                </div>
-                <div className="grid sm:grid-cols-2 gap-3">
-                  <a href={WA_MSG} target="_blank" rel="noreferrer" className="sm:col-span-2">
-                    <button className="w-full flex items-center justify-center gap-2 py-3.5 rounded-2xl font-bold text-white text-sm hover:opacity-90 transition" style={{ background: "#25D366" }}>
-                      <svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.554 4.118 1.524 5.851L.057 23.571l5.908-1.437A11.933 11.933 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.818 9.818 0 01-5.006-1.374l-.36-.214-3.713.903.952-3.618-.235-.372A9.818 9.818 0 1112 21.818z"/></svg>
-                      WhatsApp: +880 1618-699125
-                    </button>
-                  </a>
-                  <button onClick={() => setConsultModal({ open: true, prefill: "" })} className="w-full flex items-center justify-center gap-2 py-3.5 rounded-2xl font-bold text-white text-sm hover:opacity-90 transition" style={{ background: "linear-gradient(135deg,#0f9f81,#2563eb)" }}>
-                    <MessageCircle className="h-4 w-4" />{isBn ? "ফ্রি কনসালটেশন" : "Free Consultation"}
-                  </button>
-                  <a href="tel:+8801618699125"><button className="w-full flex items-center justify-center gap-2 py-3.5 rounded-2xl font-bold text-slate-800 text-sm border border-slate-200 bg-white hover:scale-[1.01] transition"><Phone className="h-4 w-4 text-blue-500" />{isBn ? "সরাসরি কল" : "Call Directly"}</button></a>
-                </div>
-              </div>
-            </Reveal>
-            <Reveal delay={0.1}>
-              <div className="rounded-[28px] overflow-hidden border border-slate-200 shadow-sm h-full min-h-[340px] bg-white">
-                <div className="flex items-center justify-between gap-3 px-5 py-4 border-b border-slate-100 bg-slate-50">
-                  <div>
-                    <h3 className="font-bold text-slate-900 text-sm">{isBn ? "ম্যাপে লোকেশন" : "Find Us on Map"}</h3>
-                    <p className="text-xs text-slate-500">{isBn ? "নেভিগেশনের জন্য Google Maps ব্যবহার করুন" : "Use Google Maps for direct navigation"}</p>
-                  </div>
-                  <a href="https://maps.google.com/?q=Bagdad+Tanzia+Tower,+Cawrasta,+Gazipur,+Dhaka" target="_blank" rel="noreferrer" className="text-xs font-bold text-emerald-700 hover:text-emerald-800">{isBn ? "গুগল ম্যাপে খুলুন" : "Open in Google Maps"}</a>
-                </div>
-                <iframe src="https://www.google.com/maps?q=Bagdad%20Tanzia%20Tower%2C%20Cawrasta%2C%20Gazipur%2C%20Dhaka&z=15&output=embed"
-                  width="100%" height="100%" style={{ border: 0, minHeight: "300px" }} allowFullScreen loading="lazy" referrerPolicy="no-referrer-when-downgrade" title="BetterLife HomeCare Location" />
-              </div>
-            </Reveal>
-          </div>
-        </div>
-      </section>
-
-      {/* ── CTA ── */}
-      <section className="py-16 bg-white">
-        <div className="max-w-6xl mx-auto px-4">
-          <div className="rounded-[32px] relative overflow-hidden border border-slate-200 shadow-[0_18px_60px_rgba(15,23,42,0.08)]" style={{ background: "linear-gradient(135deg,#0f9f81 0%,#2f7df4 100%)" }}>
-            <div className="absolute inset-0 opacity-[0.06] pointer-events-none" style={{ backgroundImage: "linear-gradient(white 1px,transparent 1px),linear-gradient(90deg,white 1px,transparent 1px)", backgroundSize: "40px 40px" }} />
-            <div className="max-w-3xl mx-auto px-6 sm:px-8 py-12 text-center relative z-10">
-              <Reveal>
-                <div className="inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/12 px-4 py-1.5 mb-6"><Heart className="h-3.5 w-3.5 text-white fill-white" /><span className="text-xs font-bold uppercase tracking-widest text-white">{isBn ? "আজই যোগাযোগ করুন" : "Contact Us Today"}</span></div>
-                <h2 className="text-3xl sm:text-4xl font-extrabold text-white mb-4">{isBn ? <>আপনার প্রিয়জনের জন্য<br />নিরাপদ ও বিশ্বস্ত সেবা</> : <>Safe, Trusted Care For<br />Your Loved One</>}</h2>
-                <p className="text-white/85 max-w-2xl mx-auto mb-8">{isBn ? "ফ্রি কনসালটেশন, দ্রুত কলব্যাক এবং গাজীপুর ভিত্তিক সাপোর্ট—আপনার প্রয়োজন বুঝে উপযুক্ত কেয়ারগিভার বা নার্সিং সেবা সাজিয়ে দিই।" : "Get a free consultation, quick callback, and dependable support from our Gazipur-based team. We help you choose the right caregiver or nursing care with confidence."}</p>
-                <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                  <button onClick={() => setConsultModal({ open: true, prefill: "" })} className="flex items-center justify-center gap-2.5 px-8 py-4 rounded-2xl font-bold text-slate-900 bg-white transition hover:scale-[1.02] shadow-lg">
-                    <MessageCircle className="h-5 w-5 text-emerald-500" />{isBn ? "ফ্রি কনসালটেশন নিন" : "Get Free Consultation"}
-                  </button>
-                  <a href="tel:+8801618699125"><button className="flex items-center justify-center gap-2.5 px-8 py-4 rounded-2xl font-bold text-white border border-white/40 bg-white/12 transition hover:scale-[1.02]"><Phone className="h-5 w-5" />{isBn ? "এখনই কল করুন" : "Call Us Now"}</button></a>
-                </div>
-              </Reveal>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ── Footer ── */}
+      {/* Footer Section */}
       <footer className="bg-slate-950">
         <div className="max-w-6xl mx-auto px-4 py-12">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
-            <div className="lg:col-
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-8 text-white">
+             <div className="lg:col-span-2">
+              <div className="flex items-center gap-2.5 mb-4">
+                <BetterLogo size={36} />
+                <div className="font-extrabold text-white text-sm">BetterLife HomeCare</div>
+              </div>
+              <p className="text-sm text-slate-400">BetterLife HomeCare provides trusted caregiver, nursing care, and home support services for families in Bangladesh.</p>
+            </div>
+            <div>
+              <h4 className="font-bold text-sm mb-3">Quick Links</h4>
+              <div className="flex flex-col gap-2 text-sm text-slate-400">
+                {navLinks.map(l => <a key={l.href} href={l.href} className="hover:text-emerald-400">{isBn ? l.bn : l.en}</a>)}
+              </div>
+            </div>
+          </div>
+          <div className="border-t border-slate-800 pt-6 text-center">
+             <p className="text-xs text-slate-500">© ২০২৫ BetterLife HomeCare। সর্বস্বত্ব সংরক্ষিত। Powered by <Link to="/" className="text-emerald-400">Insaf Web Service</Link></p>
+          </div>
+        </div>
+      </footer>
+    </div>
+  );
+}
