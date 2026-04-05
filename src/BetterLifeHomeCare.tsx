@@ -18,6 +18,13 @@ type SiteProduct = {
   image_url: string | null;
 };
 
+type SiteBanner = {
+  id: string;
+  desktop_image_url: string | null;
+  mobile_image_url: string | null;
+  created_at?: string;
+};
+
 /* ── Scroll reveal ───────────────────────────────── */
 function useInView(t = 0.1) {
   const ref = useRef<HTMLDivElement>(null);
@@ -409,6 +416,7 @@ export default function BetterLifeHomeCarePage() {
 
   // Supabase products
   const [products, setProducts] = useState<SiteProduct[]>([]);
+  const [banners, setBanners] = useState<SiteBanner[]>([]);
   const [loadingProducts, setLoadingProducts] = useState(true);
 
   useEffect(() => {
@@ -426,7 +434,18 @@ export default function BetterLifeHomeCarePage() {
       if (!error) setProducts((data as SiteProduct[]) || []);
       setLoadingProducts(false);
     };
+
+    const fetchBanners = async () => {
+      const { data, error } = await supabase
+        .from("banners")
+        .select("id, desktop_image_url, mobile_image_url, created_at")
+        .order("created_at", { ascending: false })
+        .limit(1);
+      if (!error) setBanners((data as SiteBanner[]) || []);
+    };
+
     fetchProducts();
+    fetchBanners();
   }, []);
 
   const filteredProducts = useMemo(() => {
@@ -438,6 +457,14 @@ export default function BetterLifeHomeCarePage() {
       );
     });
   }, [products, productSearch]);
+
+  const activeBanner = useMemo(() => banners[0] || null, [banners]);
+  const heroDesktopImage =
+    activeBanner?.desktop_image_url ||
+    "https://images.unsplash.com/photo-1584982751601-97d8cb0f6662?auto=format&fit=crop&w=1920&q=80";
+  const heroMobileImage =
+    activeBanner?.mobile_image_url ||
+    heroDesktopImage;
 
   const navLinks = [
     { href: "#top", bn: "হোম", en: "Home" },
@@ -458,7 +485,6 @@ export default function BetterLifeHomeCarePage() {
         .better-shimmer{background:linear-gradient(135deg,#0f9f81,#2563eb);background-size:200% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:shimmer 5s linear infinite}
         .card-hover{transition:all .3s cubic-bezier(.22,1,.36,1)}.card-hover:hover{transform:translateY(-5px);box-shadow:0 20px 50px rgba(15,23,42,.08)}
         .wa-btn{position:fixed;bottom:18px;right:18px;z-index:999;display:flex;align-items:center;gap:8px;background:#22c55e;color:white;padding:11px 18px;border-radius:50px;font-weight:700;font-size:14px;box-shadow:0 12px 30px rgba(34,197,94,.28);text-decoration:none;animation:float 3s ease-in-out infinite}
-        .hero-medical-bg{position:absolute;inset:0;background-image:linear-gradient(90deg, rgba(255,255,255,.9) 0%, rgba(255,255,255,.84) 34%, rgba(241,248,245,.78) 55%, rgba(237,245,243,.8) 100%),url('https://images.unsplash.com/photo-1586773860418-d37222d8fce3?auto=format&fit=crop&w=1600&q=80');background-size:cover;background-position:center right}
         .soft-grid{background-image:linear-gradient(rgba(15,118,110,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(15,118,110,.05) 1px,transparent 1px);background-size:38px 38px}
       `}</style>
 
@@ -510,11 +536,14 @@ export default function BetterLifeHomeCarePage() {
         
         {/* ── Premium Faceless Background ── */}
         <div className="absolute inset-0 z-0">
-          <img 
-            src="https://images.unsplash.com/photo-1584982751601-97d8cb0f6662?auto=format&fit=crop&w=1920&q=80" 
-            alt="Professional Medical Background" 
-            className="w-full h-full object-cover object-center"
-          />
+          <picture>
+            <source media="(max-width: 767px)" srcSet={heroMobileImage} />
+            <img
+              src={heroDesktopImage}
+              alt="BetterLife HomeCare Banner"
+              className="w-full h-full object-cover object-center"
+            />
+          </picture>
           <div className="absolute inset-0 bg-gradient-to-r from-white via-white/95 to-white/60" />
           <div className="absolute inset-0 soft-grid pointer-events-none opacity-40" />
         </div>
@@ -885,7 +914,7 @@ export default function BetterLifeHomeCarePage() {
                   <div className="text-[10px] text-emerald-400 font-semibold tracking-[0.14em] uppercase">Better Life. Better Care.</div>
                 </div>
               </div>
-              <p className="text-sm text-slate-400 leading-relaxed max-w-md">{isBn ? "গাজীপুর ভিত্তিক BetterLife HomeCare পরিবারগুলোর জন্য বিশ্বস্ত কেয়ারগিভার, নার্সিং কেয়ার, ফিজিওথেরাপি ও হোম সাপোর্ট সেবা পৌঁছে দেয়—নিরাপদ, সম্মানজনক ও দায়িত্বশীল যত্নের প্রতিশ্রুতি নিয়ে।" : "BetterLife HomeCare provides trusted caregiver, nursing care, physiotherapy, and home support services for families in and around Gazipur with a focus on safe, respectful, and dependable care."}</p>
+              <p className="text-sm text-slate-400 leading-relaxed max-w-md">{isBn ? "গাজীপুর ভিত্তিক BetterLife HomeCare পরিবারগুলোর জন্য বিশ্বস্ত কেয়ারগিভার, নার্সিং কেয়ার, ফিজিওথেরাপি ও মেডিকেল প্রোডাক্ট সেবা পৌঁছে দেয়—নিরাপদ, সম্মানজনক ও দায়িত্বশীল যত্নের প্রতিশ্রুতি নিয়ে।" : "BetterLife HomeCare provides trusted caregiver, nursing care, physiotherapy, and Medical products services for families in and around Gazipur with a focus on safe, respectful, and dependable care."}</p>
             </div>
             <div>
               <h4 className="font-bold text-slate-200 text-sm mb-3">{isBn ? "দ্রুত লিংক" : "Quick Links"}</h4>
